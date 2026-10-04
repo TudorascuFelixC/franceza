@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C'est, il est, il y a</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f3f4f8; --card:#ffffff; --ink:#1c2233; --muted:#5d6579; --line:#d9dce6;
+  --accent:#2a4fb0; --accent-ink:#ffffff; --soft:#e6ebf8; --warn:#b4531b; --warn-bg:#fbefe5; --ok:#23794a;
+  --ok-bg:#e3f3ea; --bad:#b3261e; --bad-bg:#fbe7e5;
+  --shadow:0 1px 2px rgba(20,30,60,.06),0 8px 24px rgba(20,30,60,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12151d; --card:#1b1f2a; --ink:#e9ecf4; --muted:#9aa2b6; --line:#2d3342;
+    --accent:#7c9cff; --accent-ink:#0e1220; --soft:#232a3d; --warn:#f0a36a; --warn-bg:#33241a; --ok:#6fd49a;
+    --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1a1a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12151d; --card:#1b1f2a; --ink:#e9ecf4; --muted:#9aa2b6; --line:#2d3342;
+  --accent:#7c9cff; --accent-ink:#0e1220; --soft:#232a3d; --warn:#f0a36a; --warn-bg:#33241a; --ok:#6fd49a;
+  --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;padding-inline:16px;padding-block:16px 32px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font:700 1.35rem/1.2 Literata,Georgia,serif;margin:0;text-wrap:balance}
+h2{font:700 1.15rem/1.3 Literata,Georgia,serif;margin:0}
+h3{font:600 1rem/1.3 "Source Sans 3",system-ui,sans-serif;margin:0}
+p{margin:0}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+a.back{color:var(--accent);font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px}
+a.back:hover{border-color:var(--accent)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px}
+.tabs button{border:none;background:transparent;color:var(--ink);border-radius:8px;padding:9px 6px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;line-height:1.2}
+.tabs button small{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tabs button[aria-selected="true"] small{color:inherit;opacity:.8}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc a{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.86rem;color:var(--ink);text-decoration:none}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:99px;background:var(--soft);color:var(--accent);font:700 .85rem/1 "Source Sans 3",sans-serif;margin-right:6px;vertical-align:2px}
+.rule{background:var(--soft);border-radius:10px;padding:10px 12px;font-weight:600}
+.rule code{font:inherit;color:var(--accent)}
+.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ex li{display:flex;flex-direction:column;border-left:3px solid var(--line);padding-left:10px}
+.ex .fr{font:500 1.05rem/1.4 Literata,Georgia,serif}
+.ex .fr b{color:var(--accent)}
+.ex .ro{color:var(--muted);font-size:.93rem}
+.ex li.no{border-left-color:var(--bad)}
+.ex li.no .fr{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--muted)}
+.ex li.yes{border-left-color:var(--ok)}
+.note{background:var(--warn-bg);border-radius:10px;padding:10px 12px;font-size:.93rem}
+.note b{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+td.fr{font-family:Literata,Georgia,serif;font-weight:500}
+td.fr b{color:var(--accent)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px 16px;font:inherit;font-weight:600;cursor:pointer;min-height:48px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tool{border:none;background:none;color:var(--accent);font:inherit;font-size:.88rem;cursor:pointer;padding:4px 2px;text-decoration:underline;text-underline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.progress{height:6px;background:var(--soft);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .2s}
+.qmeta{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.prompt{font:500 clamp(1.2rem,4.4vw,1.5rem)/1.35 Literata,Georgia,serif;overflow-wrap:anywhere;text-wrap:balance}
+.prompt .blank{display:inline-block;min-width:3.5em;border-bottom:2px solid var(--accent);color:var(--accent);text-align:center}
+.hintline{color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px 14px;font:inherit;cursor:pointer;min-height:48px}
+.opt kbd{font:600 .8rem/1.6 "Source Sans 3",sans-serif;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 6px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+input.answer{width:100%;font:500 1.15rem/1.4 "Source Sans 3",system-ui,sans-serif;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input.answer.right{border-color:var(--ok);background:var(--ok-bg)}
+input.answer.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.accents{display:flex;flex-wrap:wrap;gap:4px}
+.accents button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;min-width:34px;height:34px;font:inherit;cursor:pointer}
+.fb{border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.fb.right{background:var(--ok-bg);border:1px solid var(--ok)}
+.fb.wrong{background:var(--bad-bg);border:1px solid var(--bad)}
+.fb strong.v{font-size:1.05rem}
+.fb.right strong.v{color:var(--ok)}
+.fb.wrong strong.v{color:var(--bad)}
+.fb .sent{font:500 1.05rem/1.4 Literata,Georgia,serif}
+.fb .why{font-size:.93rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions .btn{flex:1 1 140px}
+.big{display:flex;align-items:baseline;gap:10px}
+.big b{font:700 2.6rem/1 Literata,Georgia,serif;font-variant-numeric:tabular-nums}
+.mist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.mist li{border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:2px}
+.mist .yours{color:var(--bad)}
+.mist .good{color:var(--ok);font-weight:600}
+footer{color:var(--muted);font-size:.82rem}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){.progress i{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>C'est, il est, il y a…</h1>
+    <nav class="links">
+      <a class="back" href="index.html">← Cartonașe</a>
+      <a class="back" href="quiz.html">Teste</a>
+    </nav>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="teorie">Teoria<small>reguli + exemple</small></button>
+    <button type="button" role="tab" data-tab="scriu">Completez eu<small id="nScriu"></small></button>
+    <button type="button" role="tab" data-tab="aleg">Aleg varianta<small id="nAleg"></small></button>
+  </div>
+
+  <!-- ================= TEORIA ================= -->
+  <div id="teorie" class="view" style="display:flex;flex-direction:column;gap:14px">
+
+  <section class="panel">
+    <h2>Pe scurt: pe care îl aleg?</h2>
+    <p class="muted small">În română spunem „este” în toate cazurile. În franceză alegem după ce urmează după verb.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>După verb vine…</th><th>Folosești</th><th>Exemplu</th></tr></thead>
+      <tbody>
+        <tr><td>un, une, le, la, mon, ma, ce… + substantiv (singular)</td><td class="fr"><b>c'est</b></td><td class="fr">C'est un ami.</td></tr>
+        <tr><td>des, les, mes, ces… + substantiv (plural)</td><td class="fr"><b>ce sont</b></td><td class="fr">Ce sont mes amis.</td></tr>
+        <tr><td>un nume propriu</td><td class="fr"><b>c'est</b></td><td class="fr">C'est Marie.</td></tr>
+        <tr><td>moi, toi, lui, elle, nous, vous / eux, elles</td><td class="fr"><b>c'est</b> / <b>ce sont</b></td><td class="fr">C'est moi. Ce sont eux.</td></tr>
+        <tr><td>un adjectiv despre o persoană sau un lucru anume</td><td class="fr"><b>il est / elle est</b><br><b>ils sont / elles sont</b></td><td class="fr">Elle est belle.</td></tr>
+        <tr><td>o meserie, naționalitate, religie fără articol</td><td class="fr"><b>il est / elle est</b></td><td class="fr">Il est médecin.</td></tr>
+        <tr><td>un adjectiv despre o situație, o idee, „asta” în general</td><td class="fr"><b>c'est</b> (+ adjectiv la masculin)</td><td class="fr">C'est beau !</td></tr>
+        <tr><td>ora</td><td class="fr"><b>il est</b></td><td class="fr">Il est huit heures.</td></tr>
+        <tr><td>ziua, data, un loc, un moment</td><td class="fr"><b>c'est</b></td><td class="fr">C'est lundi. C'est ici.</td></tr>
+        <tr><td>„există / se află” (ceva undeva)</td><td class="fr"><b>il y a</b></td><td class="fr">Il y a un chat ici.</td></tr>
+        <tr><td>vremea</td><td class="fr"><b>il fait</b></td><td class="fr">Il fait froid.</td></tr>
+        <tr><td>„trebuie (să)”</td><td class="fr"><b>il faut</b></td><td class="fr">Il faut partir.</td></tr>
+        <tr><td>„iată / uite”</td><td class="fr"><b>voici / voilà</b></td><td class="fr">Voici mon livre.</td></tr>
+      </tbody>
+    </table></div>
+    <nav class="toc" aria-label="Capitole">
+      <a href="#t1">1. C'est</a><a href="#t2">2. Ce sont</a><a href="#t3">3. Il est / elle est</a><a href="#t4">4. Meserii</a><a href="#t5">5. C'est + adjectiv</a><a href="#t6">6. C'est moi</a><a href="#t7">7. Ora, ziua, locul</a><a href="#t8">8. Il y a</a><a href="#t9">9. Voici / voilà</a><a href="#t10">10. Il fait</a><a href="#t11">11. Il faut</a><a href="#t12">12. Negația</a><a href="#t13">13. Întrebări</a><a href="#t14">14. Capcane</a>
+    </nav>
+  </section>
+
+  <section class="panel" id="t1">
+    <h2><span class="num">1</span>C'est = „este / asta e / el e / ea e”</h2>
+    <p>Folosim <b>c'est</b> ca să <b>prezentăm sau să identificăm</b> pe cineva sau ceva. <b>Ce</b> (= asta) + <b>est</b> (= este) se lipesc: <b>c'est</b>.</p>
+    <p class="rule">c'est + <code>un / une / le / la / l' / mon / ma / ton / ce / cette…</code> + substantiv la singular</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>C'est</b> un livre.</span><span class="ro">Este o carte. / Asta e o carte.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> ma sœur.</span><span class="ro">Ea e sora mea.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> le chien de Paul.</span><span class="ro">E câinele lui Paul.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> Marie.</span><span class="ro">E Marie.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> une bonne idée.</span><span class="ro">E o idee bună.</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> chiar dacă în română spui „<i>ea</i> e sora mea”, în franceză nu spui „<s>Elle est ma sœur</s>” când o prezinți. Dacă după verb vine un determinant (un, le, ma…), alegi <b>c'est</b>.</p>
+  </section>
+
+  <section class="panel" id="t2">
+    <h2><span class="num">2</span>Ce sont = „sunt / aceștia sunt”</h2>
+    <p><b>Ce sont</b> este pluralul lui c'est. Îl folosim când prezentăm mai multe persoane sau lucruri.</p>
+    <p class="rule">ce sont + <code>des / les / mes / tes / ces…</code> + substantiv la plural</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Ce sont</b> mes parents.</span><span class="ro">Ei sunt părinții mei.</span></li>
+      <li><span class="fr" lang="fr"><b>Ce sont</b> des pommes.</span><span class="ro">Sunt (niște) mere.</span></li>
+      <li><span class="fr" lang="fr"><b>Ce sont</b> les clés de la voiture.</span><span class="ro">Sunt cheile mașinii.</span></li>
+    </ul>
+    <p class="note"><b>Bine de știut:</b> în franceza vorbită auzi des și „C'est mes parents”. În scris și la examene folosește <b>ce sont</b>.</p>
+  </section>
+
+  <section class="panel" id="t3">
+    <h2><span class="num">3</span>Il est / elle est / ils sont / elles sont + adjectiv</h2>
+    <p>Când știm deja despre cine sau despre ce vorbim și vrem să-l <b>descriem</b>, folosim pronumele personal: <b>il</b> (masculin), <b>elle</b> (feminin), <b>ils</b>, <b>elles</b>. Adjectivul se acordă.</p>
+    <p class="rule">il est / elle est / ils sont / elles sont + <code>adjectiv</code> (fără articol)</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Paul ? <b>Il est</b> grand.</span><span class="ro">Paul? (El) este înalt.</span></li>
+      <li><span class="fr" lang="fr">Ma voiture ? <b>Elle est</b> rouge.</span><span class="ro">Mașina mea? Este roșie.</span></li>
+      <li><span class="fr" lang="fr">Mes amis ? <b>Ils sont</b> très sympas.</span><span class="ro">Prietenii mei? Sunt foarte simpatici.</span></li>
+      <li><span class="fr" lang="fr">Les fleurs ? <b>Elles sont</b> belles.</span><span class="ro">Florile? Sunt frumoase.</span></li>
+      <li><span class="fr" lang="fr">Le livre ? <b>Il est</b> sur la table.</span><span class="ro">Cartea? E pe masă. (și pentru locul unde se află)</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> <b>il / elle</b> merg după genul cuvântului în franceză, nu în română: <i>la voiture</i> → <b>elle</b>, <i>le livre</i> → <b>il</b>.</p>
+  </section>
+
+  <section class="panel" id="t4">
+    <h2><span class="num">4</span>Meserii și naționalități: il est médecin / c'est un médecin</h2>
+    <p>Aici e cea mai mare capcană. Ai două variante corecte, dar cu forme diferite:</p>
+    <p class="rule">il est / elle est + <code>meserie / naționalitate</code> (FĂRĂ articol)<br>c'est + <code>un / une</code> + meserie / naționalitate (CU articol)</p>
+    <ul class="ex">
+      <li class="yes"><span class="fr" lang="fr"><b>Il est</b> médecin.</span><span class="ro">El este medic.</span></li>
+      <li class="yes"><span class="fr" lang="fr"><b>C'est un</b> médecin.</span><span class="ro">Este un medic.</span></li>
+      <li class="no"><span class="fr" lang="fr">Il est un médecin.</span><span class="ro">greșit</span></li>
+      <li class="yes"><span class="fr" lang="fr"><b>Elle est</b> française.</span><span class="ro">Ea este franțuzoaică (adjectiv, literă mică).</span></li>
+      <li class="yes"><span class="fr" lang="fr"><b>C'est une</b> Française.</span><span class="ro">Este o franțuzoaică (substantiv, literă mare).</span></li>
+    </ul>
+    <p>Când meseria are un <b>adjectiv</b> lângă ea, folosești mereu <b>c'est un / une</b>:</p>
+    <ul class="ex">
+      <li class="yes"><span class="fr" lang="fr"><b>C'est un</b> bon professeur.</span><span class="ro">Este un profesor bun.</span></li>
+      <li class="no"><span class="fr" lang="fr">Il est un bon professeur.</span><span class="ro">greșit</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t5">
+    <h2><span class="num">5</span>C'est + adjectiv: o părere despre o situație</h2>
+    <p>Când adjectivul se referă la o <b>situație, o idee, o acțiune</b> sau la „asta” în general, folosim <b>c'est</b> + adjectiv <b>mereu la masculin singular</b>.</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>C'est</b> beau !</span><span class="ro">Ce frumos! / E frumos!</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> vrai.</span><span class="ro">E adevărat.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> dommage.</span><span class="ro">Păcat.</span></li>
+      <li><span class="fr" lang="fr">Apprendre le français, <b>c'est</b> difficile.</span><span class="ro">Să înveți franceza e greu.</span></li>
+      <li><span class="fr" lang="fr">Paris ? <b>C'est</b> magnifique !</span><span class="ro">Parisul? E minunat! (orașul în general)</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> facile à comprendre.</span><span class="ro">E ușor de înțeles.</span></li>
+    </ul>
+    <p>Compară:</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Cette tarte ? <b>Elle est</b> bonne.</span><span class="ro">Plăcinta asta? E bună. (plăcinta anume, adjectiv acordat)</span></li>
+      <li><span class="fr" lang="fr">Le chocolat, <b>c'est</b> bon !</span><span class="ro">Ciocolata e bună! (ciocolata în general)</span></li>
+    </ul>
+    <p class="note"><b>Bine de știut:</b> „E important să…” se spune <b>c'est important de</b> + infinitiv (vorbit) sau <b>il est important de</b> + infinitiv (mai formal). Ambele sunt corecte: <i>C'est / Il est important de dormir.</i></p>
+  </section>
+
+  <section class="panel" id="t6">
+    <h2><span class="num">6</span>C'est moi, c'est toi… (pronume accentuate)</h2>
+    <p class="rule">c'est + <code>moi, toi, lui, elle, nous, vous</code> · ce sont + <code>eux, elles</code></p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Qui est là ? <b>C'est moi</b>.</span><span class="ro">Cine e acolo? Eu sunt.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est toi</b>, Marc ?</span><span class="ro">Tu ești, Marc?</span></li>
+      <li><span class="fr" lang="fr"><b>C'est lui</b>, le nouveau directeur.</span><span class="ro">El e noul director.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est nous</b> !</span><span class="ro">Noi suntem!</span></li>
+      <li><span class="fr" lang="fr"><b>Ce sont eux</b>, nos voisins.</span><span class="ro">Ei sunt vecinii noștri.</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> nu spui „<s>C'est je</s>”, ci <b>c'est moi</b>. Pentru „noi” și „voi” rămâne <b>c'est</b> (c'est nous, c'est vous), doar „ei / ele” trec la <b>ce sont</b>.</p>
+  </section>
+
+  <section class="panel" id="t7">
+    <h2><span class="num">7</span>Ora, ziua, locul</h2>
+    <p>Pentru <b>oră</b> folosești <b>il est</b>. Pentru <b>zi, dată, loc, moment</b> folosești <b>c'est</b>.</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Il est</b> huit heures.</span><span class="ro">Este ora opt.</span></li>
+      <li><span class="fr" lang="fr"><b>Il est</b> midi et demi.</span><span class="ro">Este douăsprezece și jumătate.</span></li>
+      <li><span class="fr" lang="fr"><b>Il est</b> tard. / <b>Il est</b> tôt.</span><span class="ro">E târziu. / E devreme.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> lundi.</span><span class="ro">E luni.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> le 14 juillet.</span><span class="ro">E 14 iulie.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> ici. / <b>C'est</b> loin ?</span><span class="ro">Aici e. / E departe?</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t8">
+    <h2><span class="num">8</span>Il y a = „există / este / sunt / se află”</h2>
+    <p><b>Il y a</b> spune că ceva <b>există</b> sau <b>se găsește</b> undeva. Are aceeași formă la singular și la plural.</p>
+    <p class="rule">il y a + <code>un / une / des / du / de la / beaucoup de / deux…</code> + substantiv</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Il y a</b> un chat dans le jardin.</span><span class="ro">Este o pisică în grădină.</span></li>
+      <li><span class="fr" lang="fr"><b>Il y a</b> des pommes sur la table.</span><span class="ro">Sunt (niște) mere pe masă.</span></li>
+      <li><span class="fr" lang="fr"><b>Il y a</b> beaucoup de monde.</span><span class="ro">E multă lume.</span></li>
+      <li><span class="fr" lang="fr"><b>Il y a</b> du soleil.</span><span class="ro">E soare.</span></li>
+    </ul>
+    <p>Diferența față de c'est:</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Il y a</b> un médecin dans la salle.</span><span class="ro">Este (se află) un medic în sală.</span></li>
+      <li><span class="fr" lang="fr"><b>C'est</b> un médecin.</span><span class="ro">(Persoana asta) e un medic.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t9">
+    <h2><span class="num">9</span>Voici / voilà = „iată / uite”</h2>
+    <p>Arăți ceva cu degetul. <b>Voici</b> = aici, aproape; <b>voilà</b> = acolo, mai departe. În vorbire, <b>voilà</b> se folosește aproape mereu.</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Voici</b> mon passeport.</span><span class="ro">Iată pașaportul meu.</span></li>
+      <li><span class="fr" lang="fr"><b>Voilà</b> le bus !</span><span class="ro">Uite autobuzul!</span></li>
+      <li><span class="fr" lang="fr"><b>Voilà</b> !</span><span class="ro">Poftim! / Gata! / Asta e!</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t10">
+    <h2><span class="num">10</span>Il fait = vremea</h2>
+    <p>Pentru vreme nu spui „il est”, ci <b>il fait</b> + adjectiv. Unele fenomene au verbul lor: <b>il pleut</b> (plouă), <b>il neige</b> (ninge). Altele merg cu <b>il y a</b>.</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Il fait</b> beau. / <b>Il fait</b> mauvais.</span><span class="ro">E vreme frumoasă. / E vreme urâtă.</span></li>
+      <li><span class="fr" lang="fr"><b>Il fait</b> chaud. / <b>Il fait</b> froid.</span><span class="ro">E cald. / E frig.</span></li>
+      <li><span class="fr" lang="fr"><b>Il pleut</b>. / <b>Il neige</b>.</span><span class="ro">Plouă. / Ninge.</span></li>
+      <li><span class="fr" lang="fr"><b>Il y a</b> du vent. / <b>Il y a</b> des nuages.</span><span class="ro">Bate vântul. / E înnorat.</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> „<i>C'est froid</i>” înseamnă că un lucru e rece (supa, apa), nu vremea. Vremea: <b>il fait froid</b>.</p>
+  </section>
+
+  <section class="panel" id="t11">
+    <h2><span class="num">11</span>Il faut = „trebuie (să)”</h2>
+    <p><b>Il faut</b> nu se schimbă după persoană. Urmează un infinitiv (trebuie să faci ceva) sau un substantiv (e nevoie de ceva).</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Il faut</b> partir maintenant.</span><span class="ro">Trebuie să plecăm acum.</span></li>
+      <li><span class="fr" lang="fr"><b>Il faut</b> manger des légumes.</span><span class="ro">Trebuie să mănânci legume.</span></li>
+      <li><span class="fr" lang="fr"><b>Il faut</b> du temps.</span><span class="ro">E nevoie de timp.</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> <b>il faut</b> (trebuie) și <b>il fait</b> (vremea) seamănă mult. <i>Il faut</i> = trebuie; <i>il fait</i> = face / e (vreme).</p>
+  </section>
+
+  <section class="panel" id="t12">
+    <h2><span class="num">12</span>Negația</h2>
+    <p><b>ne … pas</b> înconjoară verbul. Atenție la <b>ne → n'</b> înaintea unei vocale.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Afirmativ</th><th>Negativ</th><th>Română</th></tr></thead>
+      <tbody>
+        <tr><td class="fr">C'est un problème.</td><td class="fr"><b>Ce n'est pas</b> un problème.</td><td>Nu e o problemă.</td></tr>
+        <tr><td class="fr">Ce sont mes clés.</td><td class="fr"><b>Ce ne sont pas</b> mes clés.</td><td>Nu sunt cheile mele.</td></tr>
+        <tr><td class="fr">Il est grand.</td><td class="fr"><b>Il n'est pas</b> grand.</td><td>Nu e înalt.</td></tr>
+        <tr><td class="fr">Il y a du pain.</td><td class="fr"><b>Il n'y a pas de</b> pain.</td><td>Nu e pâine.</td></tr>
+        <tr><td class="fr">Il y a des erreurs.</td><td class="fr"><b>Il n'y a pas d'</b>erreurs.</td><td>Nu sunt greșeli.</td></tr>
+        <tr><td class="fr">Il fait chaud.</td><td class="fr"><b>Il ne fait pas</b> chaud.</td><td>Nu e cald.</td></tr>
+        <tr><td class="fr">Il faut courir.</td><td class="fr"><b>Il ne faut pas</b> courir.</td><td>Nu trebuie să alergi.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Regula importantă:</b> după <b>il n'y a pas</b>, articolele <i>un, une, des, du, de la</i> devin <b>de</b> (sau <b>d'</b> înainte de vocală). După <b>ce n'est pas</b> articolul <b>rămâne</b>: <i>Ce n'est pas <b>un</b> chat.</i> / <i>Il n'y a pas <b>de</b> chat.</i></p>
+  </section>
+
+  <section class="panel" id="t13">
+    <h2><span class="num">13</span>Întrebări</h2>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>Qui est-ce ?</b> — C'est Pierre.</span><span class="ro">Cine e? — E Pierre. (pentru persoane)</span></li>
+      <li><span class="fr" lang="fr"><b>Qu'est-ce que c'est ?</b> — C'est un ordinateur.</span><span class="ro">Ce e asta? — E un computer. (pentru lucruri)</span></li>
+      <li><span class="fr" lang="fr"><b>C'est quoi ?</b> / <b>C'est qui ?</b></span><span class="ro">Ce e? / Cine e? (vorbit, familiar)</span></li>
+      <li><span class="fr" lang="fr"><b>Est-ce que c'est</b> ton sac ?</span><span class="ro">E geanta ta?</span></li>
+      <li><span class="fr" lang="fr"><b>Est-ce qu'il y a</b> une pharmacie ici ?</span><span class="ro">Există o farmacie aici?</span></li>
+      <li><span class="fr" lang="fr"><b>Il y a combien de</b> personnes ?</span><span class="ro">Câte persoane sunt?</span></li>
+      <li><span class="fr" lang="fr"><b>Qu'est-ce qu'il y a ?</b></span><span class="ro">Ce s-a întâmplat? / Ce e?</span></li>
+      <li><span class="fr" lang="fr"><b>Quelle heure est-il ?</b> — Il est deux heures.</span><span class="ro">Cât e ceasul? — E ora două.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t14">
+    <h2><span class="num">14</span>Capcane de pronunție și scriere</h2>
+    <p>Aceste cuvinte se pronunță la fel [sɛ], dar înseamnă lucruri diferite:</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr"><b>c'est</b> beau</span><span class="ro">este frumos (ce + est)</span></li>
+      <li><span class="fr" lang="fr"><b>ces</b> livres</span><span class="ro">aceste cărți (demonstrativ plural)</span></li>
+      <li><span class="fr" lang="fr"><b>ses</b> livres</span><span class="ro">cărțile lui / ei (posesiv plural)</span></li>
+    </ul>
+    <p class="note"><b>Truc:</b> dacă poți înlocui cu „cela est” / „asta este”, scrii <b>c'est</b>.</p>
+    <p class="muted small">Gata cu teoria? Încearcă <a href="#scriu" data-go="scriu">exercițiile de completat</a> sau <a href="#aleg" data-go="aleg">exercițiile cu variante</a>.</p>
+  </section>
+  </div>
+
+  <!-- ================= EXERCIȚII ================= -->
+  <section class="panel view" id="setup" hidden>
+    <h2 id="setupTitle"></h2>
+    <p class="muted" id="setupText"></p>
+    <h3>Câte exerciții</h3>
+    <div class="seg" id="lenSeg">
+      <button type="button" data-len="10">10</button>
+      <button type="button" data-len="20">20</button>
+      <button type="button" data-len="0">Toate</button>
+    </div>
+    <p class="muted small" id="setupInfo"></p>
+    <button class="btn primary" id="startBtn" type="button">Începe</button>
+  </section>
+
+  <section class="panel view" id="quiz" hidden>
+    <div class="qmeta"><span id="qCount"></span><span id="qScore"></span></div>
+    <div class="progress"><i id="qBar"></i></div>
+    <div class="prompt" id="qPrompt" lang="fr"></div>
+    <div class="hintline" id="qHint"></div>
+    <div class="opts" id="qOpts"></div>
+    <div id="qTypeBox" hidden>
+      <input class="answer" id="qInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Răspunsul tău" placeholder="Scrie ce lipsește…">
+      <div class="accents" id="accents" style="margin-top:8px"></div>
+    </div>
+    <div id="qFb"></div>
+    <div class="actions">
+      <button class="btn" id="skipBtn" type="button">Nu știu</button>
+      <button class="btn primary" id="goBtn" type="button">Verifică</button>
+    </div>
+    <div style="display:flex;justify-content:flex-end"><button class="tool" id="quitBtn" type="button">Oprește</button></div>
+  </section>
+
+  <section class="panel view" id="result" hidden>
+    <h2>Rezultat</h2>
+    <div class="big"><b id="rScore"></b><span class="muted" id="rPct"></span></div>
+    <p id="rMsg"></p>
+    <div class="actions">
+      <button class="btn primary" id="retryWrongBtn" type="button">Reia greșelile</button>
+      <button class="btn" id="againBtn" type="button">Alt set</button>
+      <button class="btn" id="theoryBtn" type="button">Înapoi la teorie</button>
+    </div>
+    <div id="rListBox">
+      <h3 style="margin-bottom:8px">Greșeli</h3>
+      <ul class="mist" id="rList"></ul>
+    </div>
+  </section>
+
+  <footer id="foot">Prezentul indicativ, ca în restul site-ului. La „Completez eu” accentele nu sunt obligatorii, iar literele mari nu contează.</footer>
+</div>
+
+<script>
+// ---------- exercises ----------
+// Completez eu: [propoziție cu ___, răspunsuri acceptate (separate prin |), traducere, explicație]
+const FILL = [
+["___ un livre.", "C'est", "Este o carte.", "Prezentăm un lucru: c'est + un + substantiv."],
+["___ mes parents.", "Ce sont", "Ei sunt părinții mei.", "Plural cu determinant (mes): ce sont."],
+["Paul ? ___ très sympa.", "Il est", "Paul? Este foarte simpatic.", "Descriem o persoană anume cu un adjectiv: il est."],
+["Marie ? ___ fatiguée aujourd'hui.", "Elle est", "Marie? Este obosită azi.", "Persoană feminină + adjectiv: elle est."],
+["___ un chat dans le jardin.", "Il y a", "Este o pisică în grădină.", "Ceva se află undeva: il y a."],
+["Mon frère ? ___ médecin.", "Il est", "Fratele meu? Este medic.", "Meserie fără articol: il est."],
+["___ un bon médecin.", "C'est", "Este un medic bun.", "Meserie cu articol și adjectiv: c'est un…"],
+["___ huit heures.", "Il est", "Este ora opt.", "Ora: il est."],
+["___ beau aujourd'hui.", "Il fait", "E vreme frumoasă azi.", "Vremea: il fait."],
+["___ partir maintenant.", "Il faut", "Trebuie să plecăm acum.", "„Trebuie să” + infinitiv: il faut."],
+["Qui est-ce ? ___ moi.", "C'est", "Cine e? Eu sunt.", "Pronume accentuat (moi): c'est moi."],
+["___ des pommes sur la table.", "Il y a", "Sunt niște mere pe masă.", "Există / se află: il y a (aceeași formă și la plural)."],
+["Ces fleurs ? ___ belles.", "Elles sont", "Florile astea? Sunt frumoase.", "La fleur e feminin, plural + adjectiv: elles sont."],
+["Tes amis ? ___ italiens.", "Ils sont", "Prietenii tăi? Sunt italieni.", "Persoane la plural + naționalitate fără articol: ils sont."],
+["Apprendre le français, ___ difficile.", "c'est", "Să înveți franceza e greu.", "Adjectiv despre o acțiune / idee: c'est."],
+["___ lait dans le frigo.", "Il n'y a pas de", "Nu e lapte în frigider.", "Negația lui il y a: il n'y a pas de (articolul devine de)."],
+["___ mon frère.", "C'est", "El e fratele meu.", "Prezentăm o persoană cu posesiv (mon): c'est, nu il est."],
+["Anne ? ___ professeure.", "Elle est", "Anne? Este profesoară.", "Meserie fără articol: elle est."],
+["___ une actrice célèbre.", "C'est", "Este o actriță celebră.", "Meserie cu articol (une): c'est."],
+["___ froid en hiver.", "Il fait", "E frig iarna.", "Vremea: il fait froid."],
+["___ combien de personnes ici ?", "Il y a", "Câte persoane sunt aici?", "Câte există: il y a combien de…"],
+["___ du vent.", "Il y a", "Bate vântul.", "Vântul, soarele, norii: il y a du vent."],
+["___ lundi aujourd'hui.", "C'est|On est|Nous sommes", "Azi e luni.", "Ziua săptămânii: c'est."],
+["___ midi.", "Il est", "E ora douăsprezece (amiază).", "Ora (și midi / minuit): il est."],
+["Est-ce que ___ ton sac ?", "c'est", "E geanta ta?", "Identificăm un obiect: c'est ton sac."],
+["Non, ___ mon sac.", "ce n'est pas", "Nu, nu e geanta mea.", "Negația lui c'est: ce n'est pas."],
+["___ mes clés.", "Ce ne sont pas", "Nu sunt cheile mele.", "Negația lui ce sont: ce ne sont pas."],
+["___ facile à comprendre.", "C'est", "E ușor de înțeles.", "Părere despre o situație: c'est + adjectiv."],
+["Nos voisins ? ___ eux.", "Ce sont|C'est", "Vecinii noștri? Ei sunt.", "Cu eux / elles: ce sont eux (în vorbire se aude și c'est eux)."],
+["Qui est là ? ___ nous !", "C'est", "Cine e acolo? Noi suntem!", "Cu nous și vous rămâne c'est: c'est nous."],
+["La gare ? ___ ici.", "C'est|Elle est", "Gara? Aici e.", "Un loc: c'est ici."],
+["Est-ce qu'___ une boulangerie près d'ici ?", "il y a", "E vreo brutărie pe aproape?", "Întrebare despre existență: est-ce qu'il y a…"],
+["___ mon passeport.", "Voici|Voilà", "Iată pașaportul meu.", "„Iată”: voici (aproape) sau voilà."],
+["___ chaud.", "Il ne fait pas", "Nu e cald.", "Negația lui il fait: il ne fait pas."],
+["___ travailler le dimanche.", "Il ne faut pas", "Nu trebuie să lucrezi duminica.", "Negația lui il faut: il ne faut pas."],
+["Mon père ? ___ grand et brun.", "Il est", "Tata? E înalt și brunet.", "Descriem o persoană: il est + adjective."],
+["___ une fille intelligente.", "C'est", "E o fată deșteaptă.", "Substantiv cu articol + adjectiv: c'est une…"],
+["Ma sœur ? ___ intelligente.", "Elle est", "Sora mea? E deșteaptă.", "Doar adjectivul, despre o persoană anume: elle est."],
+["___ vrai !", "C'est", "E adevărat!", "Expresie: c'est vrai."],
+["Tu ne viens pas ? ___ dommage.", "C'est", "Nu vii? Păcat.", "Expresie: c'est dommage."],
+["___ du soleil.", "Il y a", "E soare.", "Soarele: il y a du soleil (sau il fait soleil)."],
+["___ beaucoup de monde ici.", "Il y a", "E multă lume aici.", "Cantitate care există: il y a beaucoup de…"],
+["Qu'est-ce que c'est ? ___ un ordinateur.", "C'est", "Ce e asta? E un computer.", "Răspunsul la qu'est-ce que c'est: c'est un…"],
+["Qu'est-ce que ___ ?", "c'est", "Ce e asta?", "Întrebarea pentru lucruri: qu'est-ce que c'est ?"],
+["___ ? C'est Pierre.", "Qui est-ce|C'est qui", "Cine e? E Pierre.", "Întrebarea pentru persoane: qui est-ce ?"],
+["___ des étudiants.", "Ce sont", "Sunt (niște) studenți.", "Plural cu des: ce sont des…"],
+["Les enfants ? ___ dans le jardin.", "Ils sont", "Copiii? Sunt în grădină.", "Unde se află persoane cunoscute: ils sont + loc."],
+["___ dix heures et demie.", "Il est", "E zece și jumătate.", "Ora: il est."],
+["___ important de dormir.", "Il est|C'est", "E important să dormi.", "Ambele sunt corecte: il est important de (formal) / c'est important de (vorbit)."],
+["___ problème !", "Il n'y a pas de|Pas de", "Nicio problemă!", "Il n'y a pas de problème = nu există nicio problemă."],
+["___ à toi ?", "C'est", "E al tău?", "Apartenența: c'est à toi / c'est à moi."],
+["___ mauvais.", "Il fait", "E vreme urâtă.", "Vremea: il fait mauvais."],
+["Mes voisins ? ___ très gentils.", "Ils sont", "Vecinii mei? Sunt foarte drăguți.", "Persoane la plural + adjectiv: ils sont."],
+["___ mes voisins.", "Ce sont", "Ei sunt vecinii mei.", "Prezentăm, plural cu mes: ce sont."],
+["___ une bonne idée !", "C'est", "E o idee bună!", "Substantiv cu articol: c'est une…"],
+["Carmen ? ___ espagnole.", "Elle est", "Carmen? E spaniolă.", "Naționalitate ca adjectiv (literă mică): elle est."],
+["___ une Espagnole.", "C'est", "E o spaniolă.", "Naționalitate ca substantiv cu articol (literă mare): c'est une."],
+["___ deux chambres dans l'appartement.", "Il y a", "Sunt două dormitoare în apartament.", "Există / are: il y a deux…"],
+["___ du temps pour apprendre.", "Il faut", "E nevoie de timp ca să înveți.", "Il faut + substantiv = e nevoie de."],
+["___ une erreur.", "Ce n'est pas", "Nu e o greșeală.", "Negația lui c'est; articolul une rămâne."],
+["___ erreur ici.", "Il n'y a pas d'|Il n'y a pas d", "Nu e nicio greșeală aici.", "Il n'y a pas de devine d' înaintea unei vocale."],
+["___ toi, Marc ?", "C'est", "Tu ești, Marc?", "Pronume accentuat: c'est toi."],
+["Le livre ? ___ sur la table.", "Il est", "Cartea? E pe masă.", "Le livre e masculin, un obiect anume + loc: il est."],
+["___ tard, je vais dormir.", "Il est", "E târziu, mă duc să dorm.", "Ora / momentul zilei: il est tard."]
+];
+
+// Aleg varianta: [propoziție cu ___ (sau întrebare), variante (prima = corectă), traducere, explicație]
+const CHOICE = [
+["___ une voiture rouge.", ["C'est","Il est","Elle est","Il y a"], "E o mașină roșie.", "Substantiv cu articol (une): c'est."],
+["Ma voiture ? ___ rouge.", ["Elle est","C'est","Il est","Ce sont"], "Mașina mea? E roșie.", "O mașină anume + adjectiv; la voiture e feminin: elle est."],
+["___ des enfants dans le parc.", ["Il y a","Ce sont","Ils sont","C'est"], "Sunt niște copii în parc.", "Există / se află undeva: il y a."],
+["___ mes enfants.", ["Ce sont","Il y a","Ils sont","C'est"], "Ei sunt copiii mei.", "Prezentăm, plural cu mes: ce sont."],
+["Mes enfants ? ___ petits.", ["Ils sont","Ce sont","Il y a","Elles sont"], "Copiii mei? Sunt mici.", "Persoane cunoscute + adjectiv: ils sont."],
+["Mon oncle ? ___ avocat.", ["Il est","C'est","Il y a","Ce sont"], "Unchiul meu? E avocat.", "Meserie fără articol: il est."],
+["___ un avocat.", ["C'est","Il est","Il y a","Elle est"], "E un avocat.", "Meserie cu articol: c'est un."],
+["___ un avocat dans la salle.", ["Il y a","C'est","Il est","Ce sont"], "E (se află) un avocat în sală.", "Ceva / cineva se află undeva: il y a."],
+["___ trois heures.", ["Il est","C'est","Il y a","Il fait"], "E ora trei.", "Ora: il est."],
+["___ chaud aujourd'hui.", ["Il fait","Il est","C'est","Il y a"], "E cald azi.", "Vremea: il fait."],
+["Le film ? ___ génial !", ["C'est","Il fait","Ce sont","Il y a"], "Filmul? E genial!", "Părere: c'est génial (ar merge și il est génial)."],
+["Qui est là ? — ___ moi !", ["C'est","Il est","Ce sont","Il y a"], "Cine e acolo? — Eu sunt!", "Pronume accentuat: c'est moi."],
+["___ nos amis.", ["Ce sont","C'est","Ils sont","Il y a"], "Ei sunt prietenii noștri.", "Plural cu determinant (nos): ce sont."],
+["___ pas de pain.", ["Il n'y a","Il n'est","Ce n'est","Il ne fait"], "Nu e pâine.", "Negația lui il y a: il n'y a pas de."],
+["Ce n'est pas ___ problème.", ["un","de","des","du"], "Nu e o problemă.", "După ce n'est pas articolul rămâne: un problème."],
+["Il n'y a pas ___ problème.", ["de","un","le","des"], "Nu e nicio problemă.", "După il n'y a pas, articolul devine de."],
+["___ partir tôt demain.", ["Il faut","Il fait","Il y a","C'est"], "Trebuie să plecăm devreme mâine.", "Trebuie + infinitiv: il faut."],
+["___ sœur de Paul.", ["C'est la","Elle est la","Il est la","Il y a la"], "E sora lui Paul.", "Prezentăm cu articol (la): c'est la…"],
+["Julie ? ___ étudiante.", ["Elle est","C'est","C'est une","Il est"], "Julie? E studentă.", "Fără articol: elle est étudiante."],
+["___ étudiante sérieuse.", ["C'est une","Elle est","Elle est une","Il y a"], "E o studentă serioasă.", "Cu adjectiv lângă substantiv: c'est une…"],
+["Care propoziție e corectă?", ["C'est un bon professeur.","Il est un bon professeur.","C'est bon professeur.","Il est bon un professeur."], "Este un profesor bun.", "Meserie + adjectiv: c'est un bon professeur."],
+["Care propoziție e corectă?", ["Elle est infirmière.","C'est infirmière.","Elle est une infirmière.","Ce sont infirmière."], "Ea este asistentă medicală.", "Meserie fără articol: elle est infirmière."],
+["Le chocolat, ___ bon !", ["c'est","ce sont","il y a","il fait"], "Ciocolata e bună!", "Despre ciocolată în general: c'est bon."],
+["___ beaucoup de touristes à Paris.", ["Il y a","Ce sont","Ils sont","C'est"], "Sunt mulți turiști la Paris.", "Există mulți: il y a beaucoup de."],
+["___ midi et demi.", ["Il est","C'est","Il fait","Il y a"], "E douăsprezece și jumătate.", "Ora: il est."],
+["Cum spui „Există o problemă.”?", ["Il y a un problème.","C'est un problème.","Il est un problème.","Il fait un problème."], "Există o problemă.", "Există: il y a."],
+["Cum spui „Asta e o problemă.”?", ["C'est un problème.","Il y a un problème.","Il est un problème.","Ce sont un problème."], "Asta e o problemă.", "Asta este + substantiv cu articol: c'est un problème."],
+["___ ? — C'est un stylo.", ["Qu'est-ce que c'est","Qui est-ce","Où est-ce","Il y a quoi"], "Ce e asta? — E un pix.", "Pentru lucruri: qu'est-ce que c'est ?"],
+["___ ? — C'est mon oncle.", ["Qui est-ce","Qu'est-ce que c'est","Qu'est-ce qu'il y a","Il est qui"], "Cine e? — E unchiul meu.", "Pentru persoane: qui est-ce ?"],
+["___ ? — Rien, tout va bien.", ["Qu'est-ce qu'il y a","Qui est-ce","Qu'est-ce que c'est","C'est qui"], "Ce e? / Ce s-a întâmplat? — Nimic, totul e bine.", "Qu'est-ce qu'il y a ? = ce e, ce s-a întâmplat?"],
+["___ mon passeport.", ["Voici","Il y a","Il est","Ce sont"], "Iată pașaportul meu.", "Iată: voici / voilà."],
+["___ froid, mets un pull !", ["Il fait","Il est","C'est","Il y a"], "E frig, pune-ți un pulover!", "Vremea: il fait froid."],
+["La soupe ? ___ froide.", ["Elle est","Il fait","Il est","Il y a"], "Supa? E rece.", "Un lucru anume (la soupe, feminin) + adjectiv: elle est."],
+["___ difficile de parler chinois.", ["C'est","Il fait","Il y a","Ce sont"], "E greu să vorbești chineză.", "Părere despre o acțiune: c'est difficile de…"],
+["Care propoziție e corectă?", ["Ce ne sont pas mes livres.","Ce sont pas de mes livres.","Il n'y a pas mes livres.","Ils ne sont pas mes livres."], "Nu sunt cărțile mele.", "Negația lui ce sont: ce ne sont pas."],
+["___ des fautes dans ton texte.", ["Il y a","Ce sont","Ils sont","C'est"], "Sunt greșeli în textul tău.", "Există undeva: il y a."],
+["___ mardi.", ["C'est","Il est","Il fait","Il y a"], "E marți.", "Ziua: c'est mardi."],
+["___ le 14 juillet.", ["C'est","Il est","Il fait","Il y a"], "E 14 iulie.", "Data: c'est le…"],
+["___ elle, la directrice.", ["C'est","Il est","Elle est","Ce sont"], "Ea e directoarea.", "Pronume accentuat: c'est elle."],
+["___ eux, nos voisins.", ["Ce sont","Il est","Ils sont","Il y a"], "Ei sunt vecinii noștri.", "Cu eux: ce sont eux."],
+["___ quelqu'un à la porte.", ["Il y a","C'est","Il est","Il fait"], "E cineva la ușă.", "Există cineva: il y a quelqu'un."],
+["Il y a ___ lait ?", ["du","de","des","de la"], "E lapte?", "Afirmativ / întrebare: du lait (partitiv)."],
+["Non, il n'y a pas ___ lait.", ["de","du","le","un"], "Nu, nu e lapte.", "După negație: pas de lait."],
+["___ tard, je vais dormir.", ["Il est","Il fait","Il y a","Ce sont"], "E târziu, mă duc să dorm.", "Momentul zilei: il est tard."],
+["___ facile !", ["C'est","Il y a","Il faut","Ce sont"], "E ușor!", "Părere: c'est facile."],
+["___ de la neige en montagne.", ["Il y a","Il fait","C'est","Il est"], "E zăpadă la munte.", "Ceva care există: il y a de la neige."],
+["Cum spui „Ninge.”?", ["Il neige.","Il fait neige.","Il y a neige.","C'est neige."], "Ninge.", "Verbul neiger: il neige."],
+["Pierre et Marc ? ___ frères.", ["Ils sont","Ce sont","Il y a","C'est"], "Pierre și Marc? Sunt frați.", "Fără articol: ils sont frères (cu articol ar fi ce sont des frères)."],
+["___ des chanteurs célèbres.", ["Ce sont","Ils sont","Elles sont","Il est"], "Sunt niște cântăreți celebri.", "Plural cu des + adjectiv: ce sont des…"],
+["Où est la gare ? — ___ là-bas.", ["Elle est","Il y a","Il est","Ce sont"], "Unde e gara? — E acolo.", "La gare e feminin, unde se află: elle est là-bas."],
+["___ une pharmacie dans la rue.", ["Il y a","Elle est","C'est","Ce sont"], "E o farmacie pe stradă.", "Există: il y a une pharmacie."],
+["Cum spui „Trebuie să înveți.”?", ["Il faut apprendre.","Il fait apprendre.","Il y a apprendre.","C'est apprendre."], "Trebuie să înveți.", "Trebuie: il faut + infinitiv."],
+["Cum spui „Nu e frig.”?", ["Il ne fait pas froid.","Il n'est pas froid.","Ce n'est pas froid.","Il n'y a pas froid."], "Nu e frig.", "Vremea la negativ: il ne fait pas froid."],
+["Cum spui „Nu sunt studenți aici.”?", ["Il n'y a pas d'étudiants ici.","Il n'y a pas des étudiants ici.","Ce ne sont pas étudiants ici.","Ils ne sont pas étudiants ici."], "Nu sunt studenți aici.", "Il n'y a pas de → d' înainte de vocală."],
+["___ ma maison. Elle est grande.", ["Voici","Il y a","Il est","Elle est"], "Iată casa mea. E mare.", "Arăți ceva: voici; apoi descrii: elle est."],
+["___ mon père et ma mère.", ["Ce sont","C'est un","Ils sont","Il y a"], "Ei sunt tatăl și mama mea.", "Prezentăm două persoane: ce sont."],
+["___ normal.", ["C'est","Ce sont","Il y a","Il fait"], "E normal.", "Părere: c'est normal."],
+["Hans ? ___ allemand.", ["Il est","C'est","C'est un","Il y a"], "Hans? E german.", "Naționalitate fără articol: il est allemand."],
+["___ Allemand.", ["C'est un","Il est un","Il y a","Ce sont"], "E un german.", "Cu articol (substantiv, literă mare): c'est un Allemand."],
+["Il y a ___ chats dans la rue.", ["des","de","les","un"], "Sunt (niște) pisici pe stradă.", "Afirmativ, plural nedefinit: des."],
+["___ vous, Madame Dupont ?", ["C'est","Il est","Elle est","Ce sont"], "Dumneavoastră sunteți, doamna Dupont?", "Pronume accentuat: c'est vous."],
+["___ mes cousins. ___ sympas.", ["Ce sont / Ils sont","Ils sont / Ce sont","C'est / Ils sont","Il y a / C'est"], "Ei sunt verii mei. Sunt simpatici.", "Întâi prezinți (ce sont + mes), apoi descrii (ils sont + adjectiv)."],
+["Est-ce qu'___ un bus pour la gare ?", ["il y a","il est","c'est","il fait"], "E vreun autobuz spre gară?", "Întrebare despre existență: est-ce qu'il y a…"],
+["___ beau, on va au parc ?", ["Il fait","Il est","Il y a","Il faut"], "E vreme frumoasă, mergem în parc?", "Vremea: il fait beau."]
+];
+
+// ---------- helpers ----------
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const deacc = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+const norm = s => String(s).toLowerCase().replace(/[’‘`´]/g, "'").replace(/[?!.,;:«»"“”…]+/g, " ").replace(/\s*'\s*/g, "'").replace(/\s+/g, " ").trim();
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("frcest:" + k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("frcest:" + k, JSON.stringify(v)); } catch(e){} }
+};
+const $ = id => document.getElementById(id);
+
+// Put the answer into the blank, matching capitals at the start of a sentence.
+function fill(sentence, answers){
+  const parts = sentence.split("___");
+  let out = parts[0];
+  for (let i = 1; i < parts.length; i++) {
+    let a = answers[i - 1];
+    const before = out.trimEnd();
+    if (before === "" || /[.?!—]$/.test(before)) a = a.charAt(0).toUpperCase() + a.slice(1);
+    else a = /^(C'est|Ce |Il |Ils |Elle|Qu|Qui|Voici|Voilà)/.test(a) ? a.charAt(0).toLowerCase() + a.slice(1) : a;
+    // elision: "Est-ce qu'" + "il y a" stays as is; "d'" joins the next word
+    out += a + (/'$/.test(a) ? parts[i].replace(/^\s+/, "") : parts[i]);
+  }
+  return out;
+}
+
+// ---------- tabs ----------
+const MODES = {
+  scriu: {title: "Completez eu", text: "Citește propoziția și traducerea, apoi scrie ce lipsește (de exemplu: c'est, il est, il y a, ce n'est pas…).", items: FILL, typing: true},
+  aleg: {title: "Aleg varianta", text: "Alege varianta corectă din cele patru. După fiecare răspuns vezi și de ce.", items: CHOICE, typing: false}
+};
+$("nScriu").textContent = FILL.length + " exerciții";
+$("nAleg").textContent = CHOICE.length + " exerciții";
+let tab = "teorie", mode = null, len = store.get("len", 20);
+let test = [], qi = 0, score = 0, answered = false, wrong = [];
+
+function showView(id){ document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== id); }
+function setTab(t, keepScroll){
+  tab = t;
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  if (t === "teorie") showView("teorie");
+  else { mode = t; renderSetup(); showView("setup"); }
+  if (!keepScroll) window.scrollTo(0, 0);
+  try { history.replaceState(null, "", "#" + t); } catch(e){}
+}
+document.querySelector(".tabs").onclick = e => { const b = e.target.closest("button"); if (b) setTab(b.dataset.tab); };
+document.addEventListener("click", e => { const a = e.target.closest("a[data-go]"); if (a) { e.preventDefault(); setTab(a.dataset.go); } });
+
+// ---------- setup ----------
+function renderSetup(){
+  const m = MODES[mode];
+  $("setupTitle").textContent = m.title;
+  $("setupText").textContent = m.text;
+  document.querySelectorAll("#lenSeg button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.len === len));
+  const best = store.get("best-" + mode, null);
+  $("setupInfo").textContent = m.items.length + " exerciții în total, în ordine amestecată" + (best != null ? " · cel mai bun rezultat la un set complet: " + best + "%" : "") + ".";
+}
+$("lenSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; len = +b.dataset.len; store.set("len", len); renderSetup(); };
+$("startBtn").onclick = () => newTest();
+
+function newTest(){
+  const m = MODES[mode];
+  const n = len || m.items.length;
+  const items = shuffle(m.items.slice()).slice(0, n).map(x => m.typing
+    ? {typing: true, s: x[0], acc: x[1].split("|"), ro: x[2], why: x[3]}
+    : {typing: false, s: x[0], answer: x[1][0], opts: shuffle(x[1].slice()), ro: x[2], why: x[3]});
+  start(items, !len);
+}
+let fullRun = false;
+function start(items, full){
+  test = items; qi = 0; score = 0; wrong = []; fullRun = !!full;
+  showView("quiz"); window.scrollTo(0, 0); renderQ();
+}
+
+// ---------- running ----------
+const isSentence = q => !q.typing && !q.s.includes("___");
+function renderQ(){
+  const q = test[qi]; answered = false;
+  $("qCount").textContent = "Exercițiul " + (qi + 1) + " din " + test.length;
+  $("qScore").textContent = "Corecte: " + score;
+  $("qBar").style.width = (qi / test.length * 100) + "%";
+  const p = $("qPrompt");
+  if (isSentence(q)) { p.textContent = q.s; p.lang = "ro"; }
+  else { p.lang = "fr"; p.innerHTML = q.s.split("___").map(esc).join('<span class="blank">' + (q.typing ? "&nbsp;" : "?") + '</span>'); }
+  $("qHint").textContent = isSentence(q) ? "" : "„" + q.ro + "”";
+  $("qFb").innerHTML = "";
+  if (!q.typing) {
+    $("qTypeBox").hidden = true; $("qOpts").hidden = false;
+    $("qOpts").innerHTML = q.opts.map((o, i) => '<button type="button" class="opt" lang="fr" data-i="' + i + '"><kbd>' + (i + 1) + '</kbd><span>' + esc(o) + '</span></button>').join("");
+    $("goBtn").hidden = true;
+  } else {
+    $("qOpts").hidden = true; $("qOpts").innerHTML = "";
+    $("qTypeBox").hidden = false;
+    const inp = $("qInput"); inp.value = ""; inp.className = "answer"; inp.disabled = false;
+    $("accents").innerHTML = "é è ê à ç ' ù".split(" ").map(ch => '<button type="button" tabindex="-1">' + ch + '</button>').join("");
+    $("goBtn").hidden = false; $("goBtn").textContent = "Verifică";
+    inp.focus({preventScroll: true});
+  }
+  $("skipBtn").hidden = false;
+}
+function correctSentence(q){
+  if (q.typing) return fill(q.s, [q.acc[0]]);
+  if (isSentence(q)) return q.answer;
+  return fill(q.s, q.answer.split(" / "));
+}
+function finishQ(ok, note, yours){
+  answered = true;
+  const q = test[qi];
+  if (ok) score++; else wrong.push({q, yours});
+  const other = q.typing && q.acc.length > 1 ? '<span class="small muted">Se acceptă și: ' + q.acc.slice(1).map(esc).join(", ") + '</span>' : "";
+  $("qFb").innerHTML = '<div class="fb ' + (ok ? "right" : "wrong") + '" role="status"><strong class="v">' + (ok ? "Corect!" : "Greșit") + '</strong>' +
+    (note ? '<span>' + esc(note) + '</span>' : "") +
+    '<span class="sent" lang="fr">' + esc(correctSentence(q)) + '</span>' + other +
+    '<span class="small muted">' + esc(q.ro) + '</span>' +
+    '<span class="why">' + esc(q.why) + '</span></div>';
+  $("qScore").textContent = "Corecte: " + score;
+  $("qBar").style.width = ((qi + 1) / test.length * 100) + "%";
+  $("skipBtn").hidden = true;
+  $("goBtn").hidden = false;
+  $("goBtn").textContent = qi + 1 < test.length ? "Următorul →" : "Vezi rezultatul";
+  $("goBtn").focus({preventScroll: true});
+}
+function choose(i){
+  const q = test[qi]; if (answered || q.typing) return;
+  document.querySelectorAll("#qOpts .opt").forEach((b, j) => {
+    b.disabled = true;
+    if (q.opts[j] === q.answer) b.classList.add("right"); else if (j === i) b.classList.add("wrong");
+  });
+  finishQ(q.opts[i] === q.answer, "", q.opts[i]);
+}
+function check(){
+  const q = test[qi], inp = $("qInput");
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const t = norm(inp.value), acc = q.acc.map(norm);
+  let r = null;
+  if (acc.includes(t)) r = "exact";
+  else if (acc.map(deacc).includes(deacc(t))) r = "accents";
+  inp.disabled = true; inp.classList.add(r ? "right" : "wrong");
+  finishQ(!!r, r === "accents" ? "Atenție la accente." : "", inp.value.trim());
+}
+function skip(){
+  if (answered) return;
+  const q = test[qi];
+  if (!q.typing) document.querySelectorAll("#qOpts .opt").forEach((b, j) => { b.disabled = true; if (q.opts[j] === q.answer) b.classList.add("right"); });
+  else { $("qInput").disabled = true; $("qInput").classList.add("wrong"); }
+  finishQ(false, "", "(nu știu)");
+}
+function advance(){ if (qi + 1 < test.length) { qi++; renderQ(); } else results(); }
+$("qOpts").onclick = e => { const b = e.target.closest(".opt"); if (b) choose(+b.dataset.i); };
+$("goBtn").onclick = () => answered ? advance() : check();
+$("skipBtn").onclick = skip;
+$("quitBtn").onclick = () => { if (qi > 0 || answered) { test = test.slice(0, qi + (answered ? 1 : 0)); fullRun = false; results(); } else setTab(mode); };
+$("qInput").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); answered ? advance() : check(); } });
+$("accents").addEventListener("mousedown", e => e.preventDefault());
+$("accents").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const inp = $("qInput"); if (inp.disabled) return;
+  const s = inp.selectionStart ?? inp.value.length, en = inp.selectionEnd ?? s;
+  inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(en);
+  inp.setSelectionRange(s + 1, s + 1); inp.focus();
+};
+document.addEventListener("keydown", e => {
+  if ($("quiz").hidden || e.target.tagName === "INPUT") return;
+  const q = test[qi];
+  if (!answered && !q.typing && /^[1-4]$/.test(e.key) && q.opts[+e.key - 1] != null) { e.preventDefault(); choose(+e.key - 1); }
+  else if (answered && e.key === "Enter" && e.target !== $("goBtn")) { e.preventDefault(); advance(); }
+});
+
+// ---------- results ----------
+function results(){
+  const n = test.length, pct = n ? Math.round(score / n * 100) : 0;
+  $("rScore").textContent = score + " / " + n;
+  $("rPct").textContent = pct + "%";
+  $("rMsg").textContent = pct === 100 ? "Perfect! Nicio greșeală." : pct >= 85 ? "Foarte bine!" : pct >= 60 ? "Bine. Uită-te la greșelile de mai jos și reia-le." : "Mai citește o dată teoria, apoi reia exercițiile.";
+  if (fullRun) { const b = store.get("best-" + mode, null); if (b == null || pct > b) store.set("best-" + mode, pct); }
+  $("retryWrongBtn").hidden = !wrong.length;
+  $("rListBox").hidden = !wrong.length;
+  $("rList").innerHTML = wrong.map(w => {
+    const q = w.q;
+    return '<li><span lang="fr">' + esc(q.s) + '</span><span class="small">Tu: <span class="yours" lang="fr">' + esc(w.yours) + '</span></span><span class="small">Corect: <span class="good" lang="fr">' + esc(correctSentence(q)) + '</span></span><span class="small muted">' + esc(q.why) + '</span></li>';
+  }).join("");
+  showView("result"); window.scrollTo(0, 0);
+}
+$("retryWrongBtn").onclick = () => start(shuffle(wrong.map(w => w.q)).map(q => q.typing ? q : {...q, opts: shuffle(q.opts.slice())}), false);
+$("againBtn").onclick = () => newTest();
+$("theoryBtn").onclick = () => setTab("teorie");
+
+const h = location.hash.slice(1);
+setTab(MODES[h] ? h : "teorie", true);
+if (h && /^t\d+$/.test(h)) { const el = $(h); if (el) el.scrollIntoView(); }
+</script>
+</body>
+</html>
