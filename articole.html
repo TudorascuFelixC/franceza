@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Articolele în franceză</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f3f4f8; --card:#ffffff; --ink:#1c2233; --muted:#5d6579; --line:#d9dce6;
+  --accent:#2a4fb0; --accent-ink:#ffffff; --soft:#e6ebf8; --warn:#b4531b; --warn-bg:#fbefe5; --ok:#23794a;
+  --ok-bg:#e3f3ea; --bad:#b3261e; --bad-bg:#fbe7e5;
+  --shadow:0 1px 2px rgba(20,30,60,.06),0 8px 24px rgba(20,30,60,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12151d; --card:#1b1f2a; --ink:#e9ecf4; --muted:#9aa2b6; --line:#2d3342;
+    --accent:#7c9cff; --accent-ink:#0e1220; --soft:#232a3d; --warn:#f0a36a; --warn-bg:#33241a; --ok:#6fd49a;
+    --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1a1a;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12151d; --card:#1b1f2a; --ink:#e9ecf4; --muted:#9aa2b6; --line:#2d3342;
+  --accent:#7c9cff; --accent-ink:#0e1220; --soft:#232a3d; --warn:#f0a36a; --warn-bg:#33241a; --ok:#6fd49a;
+  --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1a1a;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;padding-inline:16px;padding-block:16px 32px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font:700 1.35rem/1.2 Literata,Georgia,serif;margin:0;text-wrap:balance}
+h2{font:700 1.15rem/1.3 Literata,Georgia,serif;margin:0}
+h3{font:600 1rem/1.3 "Source Sans 3",system-ui,sans-serif;margin:0}
+p{margin:0}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+a.back{color:var(--accent);font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px}
+a.back:hover{border-color:var(--accent)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px}
+.tabs button{border:none;background:transparent;color:var(--ink);border-radius:8px;padding:9px 6px;font:inherit;font-weight:600;font-size:.92rem;cursor:pointer;line-height:1.2}
+.tabs button small{display:block;font-weight:400;color:var(--muted);font-size:.78rem}
+.tabs button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.tabs button[aria-selected="true"] small{color:inherit;opacity:.8}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:18px;display:flex;flex-direction:column;gap:12px}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc a{border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:.86rem;color:var(--ink);text-decoration:none}
+.toc a:hover{border-color:var(--accent);color:var(--accent)}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:99px;background:var(--soft);color:var(--accent);font:700 .85rem/1 "Source Sans 3",sans-serif;margin-right:6px;vertical-align:2px}
+.rule{background:var(--soft);border-radius:10px;padding:10px 12px;font-weight:600}
+.rule code{font:inherit;color:var(--accent)}
+.ex{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ex li{display:flex;flex-direction:column;border-left:3px solid var(--line);padding-left:10px}
+.ex .fr{font:500 1.05rem/1.4 Literata,Georgia,serif}
+.ex .fr b{color:var(--accent)}
+.ex .ro{color:var(--muted);font-size:.93rem}
+.ex li.no{border-left-color:var(--bad)}
+.ex li.no .fr{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--muted)}
+.ex li.yes{border-left-color:var(--ok)}
+.note{background:var(--warn-bg);border-radius:10px;padding:10px 12px;font-size:.93rem}
+.note b{color:var(--warn)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:.82rem;text-transform:uppercase;letter-spacing:.04em}
+td.fr{font-family:Literata,Georgia,serif;font-weight:500}
+td.fr b{color:var(--accent)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.seg button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px 16px;font:inherit;font-weight:600;cursor:pointer;min-height:48px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tool{border:none;background:none;color:var(--accent);font:inherit;font-size:.88rem;cursor:pointer;padding:4px 2px;text-decoration:underline;text-underline-offset:3px}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.progress{height:6px;background:var(--soft);border-radius:99px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);transition:width .2s}
+.qmeta{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
+.prompt{font:500 clamp(1.2rem,4.4vw,1.5rem)/1.35 Literata,Georgia,serif;overflow-wrap:anywhere;text-wrap:balance}
+.prompt .blank{display:inline-block;min-width:3.5em;border-bottom:2px solid var(--accent);color:var(--accent);text-align:center}
+.hintline{color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px 14px;font:inherit;cursor:pointer;min-height:48px}
+.opt kbd{font:600 .8rem/1.6 "Source Sans 3",sans-serif;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 6px;flex:none}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+input.answer{width:100%;font:500 1.15rem/1.4 "Source Sans 3",system-ui,sans-serif;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+input.answer.right{border-color:var(--ok);background:var(--ok-bg)}
+input.answer.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.accents{display:flex;flex-wrap:wrap;gap:4px}
+.accents button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;min-width:34px;height:34px;font:inherit;cursor:pointer}
+.fb{border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.fb.right{background:var(--ok-bg);border:1px solid var(--ok)}
+.fb.wrong{background:var(--bad-bg);border:1px solid var(--bad)}
+.fb strong.v{font-size:1.05rem}
+.fb.right strong.v{color:var(--ok)}
+.fb.wrong strong.v{color:var(--bad)}
+.fb .sent{font:500 1.05rem/1.4 Literata,Georgia,serif}
+.fb .why{font-size:.93rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions .btn{flex:1 1 140px}
+.big{display:flex;align-items:baseline;gap:10px}
+.big b{font:700 2.6rem/1 Literata,Georgia,serif;font-variant-numeric:tabular-nums}
+.mist{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.mist li{border-top:1px solid var(--line);padding-top:8px;display:flex;flex-direction:column;gap:2px}
+.mist .yours{color:var(--bad)}
+.mist .good{color:var(--ok);font-weight:600}
+footer{color:var(--muted);font-size:.82rem}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion: reduce){.progress i{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Articolele: un, le, au, du…</h1>
+    <nav class="links">
+      <a class="back" href="index.html">← Cartonașe</a>
+      <a class="back" href="quiz.html">Teste</a>
+      <a class="back" href="cest-il-est.html">C'est / il est</a>
+    </nav>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="teorie">Teoria<small>reguli + exemple</small></button>
+    <button type="button" role="tab" data-tab="scriu">Completez eu<small id="nScriu"></small></button>
+    <button type="button" role="tab" data-tab="aleg">Aleg varianta<small id="nAleg"></small></button>
+  </div>
+
+  <!-- ================= TEORIA ================= -->
+  <div id="teorie" class="view" style="display:flex;flex-direction:column;gap:14px">
+
+  <section class="panel">
+    <h2>Pe scurt: cele patru feluri de articole</h2>
+    <p class="muted small">În română articolul se lipește de cuvânt (cartea, o carte) sau lipsește („beau apă”). În franceză aproape fiecare substantiv are ceva în față, și trebuie să alegi ce anume.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Articol</th><th>Forme</th><th>Când</th><th>Exemplu</th></tr></thead>
+      <tbody>
+        <tr><td>nehotărât</td><td class="fr"><b>un, une, des</b></td><td>ceva oarecare, care se poate număra („un, o, niște”)</td><td class="fr">J'ai <b>un</b> chien.</td></tr>
+        <tr><td>hotărât</td><td class="fr"><b>le, la, l', les</b></td><td>ceva anume, cunoscut, unic sau „în general”</td><td class="fr">J'aime <b>le</b> chocolat.</td></tr>
+        <tr><td>contractat</td><td class="fr"><b>au, aux, du, des</b></td><td>prepoziția à / de lipită de le / les</td><td class="fr">Je vais <b>au</b> marché.</td></tr>
+        <tr><td>partitiv</td><td class="fr"><b>du, de la, de l', des</b></td><td>o cantitate nedefinită dintr-un lucru care nu se numără („puțin din”)</td><td class="fr">Je bois <b>de l'</b>eau.</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Cuvântul-capcană:</b> <b>des</b> apare în trei tabele: nehotărât (<i>des pommes</i> = niște mere), contractat (<i>la voiture des voisins</i> = de + les) și partitiv (<i>des épinards</i> = spanac). <b>Du</b> apare în două: contractat (<i>le livre du prof</i>) și partitiv (<i>du pain</i>).</p>
+    <nav class="toc" aria-label="Capitole">
+      <a href="#t1">1. Nehotărâte</a><a href="#t2">2. Hotărâte</a><a href="#t3">3. Contractate</a><a href="#t4">4. Partitive</a><a href="#t5">5. Negația → de</a><a href="#t6">6. Cantități</a><a href="#t7">7. des → de</a><a href="#t8">8. Fără articol</a><a href="#t9">9. Țări și orașe</a><a href="#t10">10. Corpul</a><a href="#t11">11. Verbe + à / de</a><a href="#t12">12. Cum aleg</a>
+    </nav>
+  </section>
+
+  <section class="panel" id="t1">
+    <h2><span class="num">1</span>Articolele nehotărâte: un, une, des</h2>
+    <p>Le folosim pentru un lucru sau o persoană <b>oarecare</b>, despre care vorbim prima dată, și care <b>se poate număra</b>.</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Masculin</th><th>Feminin</th></tr></thead>
+      <tbody>
+        <tr><td>Singular</td><td class="fr"><b>un</b> livre (o carte)</td><td class="fr"><b>une</b> table (o masă)</td></tr>
+        <tr><td>Plural</td><td class="fr" colspan="2"><b>des</b> livres, <b>des</b> tables (niște cărți, niște mese)</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Il y a <b>un</b> problème.</span><span class="ro">Este o problemă. (problème e masculin, deși „problema” e feminin în română!)</span></li>
+      <li><span class="fr" lang="fr">J'ai <b>une</b> idée.</span><span class="ro">Am o idee.</span></li>
+      <li><span class="fr" lang="fr">Elle a <b>des</b> enfants.</span><span class="ro">Ea are copii. (în română nu spunem „niște”, în franceză <b>des</b> nu poate lipsi)</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> genul se ia din franceză, nu din română. Câteva care te păcălesc: <i>un problème, un système, un groupe, un lit</i> (pat), <i>une voiture, une fleur, une dent, une chaise</i>; <i>la mer</i> (marea), <i>le lait</i> (laptele), <i>la tour</i> (turnul) dar <i>le tour</i> (tura).</p>
+    <p class="rule">În română „am mașină”, „ai copii” → în franceză <code>j'ai une voiture</code>, <code>tu as des enfants</code>. Articolul nu dispare.</p>
+  </section>
+
+  <section class="panel" id="t2">
+    <h2><span class="num">2</span>Articolele hotărâte: le, la, l', les</h2>
+    <p>Corespund lui <b>-ul, -a, -le, -i</b> din română: ceva <b>anume</b>, deja cunoscut sau <b>unic</b>.</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>Masculin</th><th>Feminin</th></tr></thead>
+      <tbody>
+        <tr><td>Singular</td><td class="fr"><b>le</b> livre</td><td class="fr"><b>la</b> table</td></tr>
+        <tr><td>Înainte de vocală / h mut</td><td class="fr" colspan="2"><b>l'</b>arbre, <b>l'</b>école, <b>l'</b>homme, <b>l'</b>hôtel</td></tr>
+        <tr><td>Plural</td><td class="fr" colspan="2"><b>les</b> livres, <b>les</b> tables, <b>les</b> arbres</td></tr>
+      </tbody>
+    </table></div>
+    <h3>Unde îl pune franceza, deși româna nu îl pune</h3>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">J'aime <b>le</b> café. Je déteste <b>la</b> pluie.</span><span class="ro">Îmi place cafeaua. Urăsc ploaia. După <b>aimer, adorer, préférer, détester</b> = lucrul în general → articol hotărât.</span></li>
+      <li><span class="fr" lang="fr"><b>Les</b> chats aiment dormir.</span><span class="ro">Pisicile (în general) dorm mult.</span></li>
+      <li><span class="fr" lang="fr"><b>La</b> France, <b>le</b> Portugal, <b>les</b> États-Unis</span><span class="ro">Țările au articol (dar nu și orașele: Paris, Londres).</span></li>
+      <li><span class="fr" lang="fr">J'apprends <b>le</b> français.</span><span class="ro">Învăț franceza. (dar: je parle français, fără articol)</span></li>
+      <li><span class="fr" lang="fr"><b>Le</b> lundi, je vais à la piscine.</span><span class="ro">Lunea (în fiecare luni) merg la piscină. Fără articol: <i>lundi</i> = lunea asta.</span></li>
+      <li><span class="fr" lang="fr"><b>Le</b> docteur Martin est là.</span><span class="ro">Doctorul Martin e aici. Titlu + nume → articol.</span></li>
+    </ul>
+    <h3>H mut și h aspirat</h3>
+    <p>Cele mai multe cuvinte cu <b>h</b> se comportă ca o vocală (<i>l'homme, l'hôpital, l'heure</i>). Câteva au <b>h aspirat</b>: nu fac elisiune și nici legătură.</p>
+    <ul class="ex">
+      <li class="yes"><span class="fr" lang="fr"><b>le</b> héros, <b>le</b> hibou, <b>la</b> honte, <b>le</b> haricot, <b>le</b> hasard, <b>la</b> Hongrie</span><span class="ro">eroul, bufnița, rușinea, fasolea, întâmplarea, Ungaria</span></li>
+      <li class="no"><span class="fr" lang="fr">l'héros, l'hibou</span><span class="ro">greșit</span></li>
+    </ul>
+    <p class="note"><b>Truc:</b> la <b>h aspirat</b> nici <i>du</i> nu devine <i>de l'</i>: <i>la peur <b>du</b> hasard</i>, <i>une boîte <b>de</b> haricots</i>.</p>
+  </section>
+
+  <section class="panel" id="t3">
+    <h2><span class="num">3</span>Articolele contractate: au, aux, du, des</h2>
+    <p>Prepozițiile <b>à</b> (la, cu, în) și <b>de</b> (de la, din, despre, al) <b>se lipesc obligatoriu</b> de <b>le</b> și <b>les</b>. Cu <b>la</b> și <b>l'</b> nu se lipesc.</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>+ le</th><th>+ la</th><th>+ l'</th><th>+ les</th></tr></thead>
+      <tbody>
+        <tr><td class="fr"><b>à</b></td><td class="fr"><b>au</b></td><td class="fr">à la</td><td class="fr">à l'</td><td class="fr"><b>aux</b></td></tr>
+        <tr><td class="fr"><b>de</b></td><td class="fr"><b>du</b></td><td class="fr">de la</td><td class="fr">de l'</td><td class="fr"><b>des</b></td></tr>
+      </tbody>
+    </table></div>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Je vais <b>au</b> cinéma. Je vais <b>à la</b> plage. Je vais <b>à l'</b>école.</span><span class="ro">Merg la cinema / la plajă / la școală.</span></li>
+      <li><span class="fr" lang="fr">Il parle <b>aux</b> enfants.</span><span class="ro">Vorbește cu copiii. (parler à quelqu'un)</span></li>
+      <li><span class="fr" lang="fr">Il revient <b>du</b> marché. Elle sort <b>de la</b> banque.</span><span class="ro">Se întoarce de la piață. Iese din bancă.</span></li>
+      <li><span class="fr" lang="fr">C'est la voiture <b>des</b> voisins.</span><span class="ro">E mașina vecinilor. (de + les)</span></li>
+      <li><span class="fr" lang="fr">On parle <b>du</b> film.</span><span class="ro">Vorbim despre film. (parler de quelque chose)</span></li>
+      <li class="no"><span class="fr" lang="fr">à le cinéma · de le marché · à les enfants · de les voisins</span><span class="ro">Nu există niciodată în franceză.</span></li>
+    </ul>
+    <p class="note"><b>Capcane:</b> <i>Le</i> din numele proprii se contractă și el: <i>Le Havre → je vais <b>au</b> Havre</i>, <i>Le Caire → je viens <b>du</b> Caire</i>. Dar <b>le</b> pronume (= îl) nu se contractă niciodată: <i>j'ai commencé <b>à le</b> lire</i> (am început să-l citesc).</p>
+    <h3>Jouer à / jouer de</h3>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">jouer <b>au</b> football, <b>aux</b> cartes, <b>à la</b> pétanque</span><span class="ro">sport sau joc → à</span></li>
+      <li><span class="fr" lang="fr">jouer <b>du</b> piano, <b>de la</b> guitare, <b>de l'</b>accordéon</span><span class="ro">instrument → de</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t4">
+    <h2><span class="num">4</span>Articolele partitive: du, de la, de l', des</h2>
+    <p>Arată <b>o parte, o cantitate nedefinită</b> dintr-un lucru care <b>nu se numără</b>: mâncare, băutură, materiale, calități, activități. În română de obicei nu punem nimic: „beau apă”, „mănânc pâine”, „ai noroc”.</p>
+    <p class="rule">du + <code>masculin</code> · de la + <code>feminin</code> · de l' + <code>vocală / h mut</code> · des + <code>plural nenumărabil</code></p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Je mange <b>du</b> pain et <b>de la</b> confiture.</span><span class="ro">Mănânc pâine cu gem.</span></li>
+      <li><span class="fr" lang="fr">Tu veux <b>de l'</b>eau ?</span><span class="ro">Vrei apă?</span></li>
+      <li><span class="fr" lang="fr">Il mange <b>des</b> épinards / <b>des</b> pâtes.</span><span class="ro">Mănâncă spanac / paste (cuvinte care în franceză sunt doar la plural).</span></li>
+      <li><span class="fr" lang="fr">Tu as <b>de la</b> chance. Il faut <b>du</b> courage.</span><span class="ro">Ai noroc. E nevoie de curaj. (calități)</span></li>
+      <li><span class="fr" lang="fr">Je fais <b>du</b> sport, <b>de la</b> natation, <b>du</b> piano.</span><span class="ro">Fac sport, înot, pian. (faire de + activitate)</span></li>
+      <li><span class="fr" lang="fr">Il y a <b>du</b> vent / <b>du</b> soleil / <b>du</b> monde.</span><span class="ro">Bate vântul / E soare / E lume.</span></li>
+    </ul>
+    <h3>Partitiv sau hotărât? Depinde de verb</h3>
+    <ul class="ex">
+      <li class="yes"><span class="fr" lang="fr">J'<b>aime le</b> fromage, alors je <b>mange du</b> fromage.</span><span class="ro">Îmi place brânza (în general), așa că mănânc brânză (o cantitate).</span></li>
+      <li class="no"><span class="fr" lang="fr">J'aime du fromage.</span><span class="ro">greșit: după aimer vine articol hotărât</span></li>
+      <li class="yes"><span class="fr" lang="fr">Passe-moi <b>le</b> sel.</span><span class="ro">Dă-mi sarea (cea de pe masă, una anume).</span></li>
+    </ul>
+    <h3>Partitiv sau nehotărât?</h3>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Je bois <b>du</b> café. / Je bois <b>un</b> café.</span><span class="ro">Beau cafea (în general, o cantitate). / Beau o cafea (o ceașcă).</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t5">
+    <h2><span class="num">5</span>Negația: un, une, des, du, de la, de l' → de / d'</h2>
+    <p>După <b>ne… pas, ne… plus, ne… jamais</b>, articolul nehotărât și cel partitiv devin <b>de</b> (sau <b>d'</b> înainte de vocală).</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">J'ai une voiture. → Je n'ai pas <b>de</b> voiture.</span><span class="ro">Nu am mașină.</span></li>
+      <li><span class="fr" lang="fr">Il boit du lait. → Il ne boit plus <b>de</b> lait.</span><span class="ro">Nu mai bea lapte.</span></li>
+      <li><span class="fr" lang="fr">Elle a des amis. → Elle n'a pas <b>d'</b>amis.</span><span class="ro">Nu are prieteni.</span></li>
+    </ul>
+    <p class="rule">Excepții unde articolul <code>rămâne</code> la negativ</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Ce n'est pas <b>un</b> chat, c'est un chien. Ce ne sont pas <b>des</b> amis.</span><span class="ro">1. După <b>être</b> nu se schimbă nimic.</span></li>
+      <li><span class="fr" lang="fr">Je n'aime pas <b>le</b> café.</span><span class="ro">2. Articolul hotărât (le, la, les) nu se schimbă.</span></li>
+      <li><span class="fr" lang="fr">Je ne bois que <b>de l'</b>eau.</span><span class="ro">3. <b>Ne… que</b> = doar, nu e negație adevărată: articolul rămâne.</span></li>
+      <li><span class="fr" lang="fr">Ce n'est pas <b>du</b> vin, c'est du jus.</span><span class="ro">4. Contrast „nu e asta, e altceva” cu être.</span></li>
+    </ul>
+    <p class="note"><b>Atenție:</b> <i>il n'y a pas <b>de</b> pain</i> (il y a nu e être!), dar <i>ce n'est pas <b>du</b> pain</i>.</p>
+  </section>
+
+  <section class="panel" id="t6">
+    <h2><span class="num">6</span>Cantități: beaucoup de, un peu de, un kilo de…</h2>
+    <p>După un cuvânt de cantitate vine doar <b>de / d'</b>, fără articol.</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">beaucoup <b>de</b> neige · un peu <b>de</b> sucre · trop <b>d'</b>alcool · assez <b>de</b> temps · peu <b>de</b> gens</span><span class="ro">multă zăpadă · puțin zahăr · prea mult alcool · destul timp · puțini oameni</span></li>
+      <li><span class="fr" lang="fr">un kilo <b>de</b> tomates · une bouteille <b>d'</b>eau · un verre <b>de</b> vin · une tasse <b>de</b> thé</span><span class="ro">un kilogram de roșii · o sticlă de apă · un pahar de vin · o ceașcă de ceai</span></li>
+      <li class="no"><span class="fr" lang="fr">beaucoup des gens · un kilo des pommes</span><span class="ro">greșit</span></li>
+    </ul>
+    <p class="note"><b>Excepții cu des:</b> <i>la plupart <b>des</b> gens</i> (majoritatea oamenilor), <i>bien <b>des</b> fois</i> (de multe ori). Și când vorbim de ceva anume: <i>beaucoup <b>des</b> amis de Paul</i> = mulți dintre prietenii lui Paul.</p>
+  </section>
+
+  <section class="panel" id="t7">
+    <h2><span class="num">7</span>Des → de înaintea unui adjectiv</h2>
+    <p>Când un adjectiv stă <b>înaintea</b> substantivului la plural, <b>des</b> devine <b>de</b> (în franceza scrisă, corectă).</p>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">des fleurs → <b>de</b> belles fleurs</span><span class="ro">niște flori frumoase</span></li>
+      <li><span class="fr" lang="fr">des maisons → <b>de</b> vieilles maisons</span><span class="ro">niște case vechi</span></li>
+      <li><span class="fr" lang="fr">des amis → <b>d'</b>autres amis</span><span class="ro">alți prieteni</span></li>
+      <li><span class="fr" lang="fr">des voitures rouges</span><span class="ro">adjectivul e după → des rămâne</span></li>
+    </ul>
+    <p class="note"><b>Bine de știut:</b> în vorbire auzi și „des belles fleurs”. Când adjectivul și substantivul formează un singur cuvânt, rămâne <b>des</b>: <i>des jeunes filles, des petits pois, des grands-parents</i>.</p>
+    <h3>De + des → de</h3>
+    <p>Când un verb cere <b>de</b> (avoir besoin de, parler de, avoir envie de) și urmează un <b>des</b> nehotărât sau partitiv, rămâne doar <b>de</b>: <i>J'ai besoin <b>de</b> vacances</i> (nu „de des vacances”). Dar cu un lucru anume: <i>J'ai besoin <b>des</b> clés de la voiture</i> (de + les).</p>
+  </section>
+
+  <section class="panel" id="t8">
+    <h2><span class="num">8</span>Când nu pui niciun articol</h2>
+    <ul class="ex">
+      <li><span class="fr" lang="fr">Il est médecin. Elle est française.</span><span class="ro">Meserie, naționalitate după être (dar: c'est <b>un</b> médecin).</span></li>
+      <li><span class="fr" lang="fr">un café sans sucre · une robe de soie</span><span class="ro">După <b>sans</b> și la material (de / en).</span></li>
+      <li><span class="fr" lang="fr">Je ne mange ni viande ni poisson.</span><span class="ro">După <b>ni… ni</b>.</span></li>
+      <li><span class="fr" lang="fr">Paris, Marie, Londres</span><span class="ro">Orașe și nume de persoane.</span></li>
+      <li><span class="fr" lang="fr">avoir faim, avoir peur, avoir besoin, faire attention</span><span class="ro">Expresii fixe cu avoir / faire.</span></li>
+      <li><span class="fr" lang="fr">en France, en été, en voiture</span><span class="ro">După <b>en</b>.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t9">
+    <h2><span class="num">9</span>Țări și orașe: en, au, aux, à / de, du, des</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Țara</th><th>Merg / locuiesc în…</th><th>Vin din…</th></tr></thead>
+      <tbody>
+        <tr><td>feminină (cele mai multe în -e)<br><span class="muted small">la France, l'Italie</span></td><td class="fr"><b>en</b> France, <b>en</b> Italie</td><td class="fr"><b>de</b> France, <b>d'</b>Italie</td></tr>
+        <tr><td>masculină cu vocală<br><span class="muted small">l'Iran, l'Irak</span></td><td class="fr"><b>en</b> Iran</td><td class="fr"><b>d'</b>Iran</td></tr>
+        <tr><td>masculină cu consoană<br><span class="muted small">le Portugal, le Canada</span></td><td class="fr"><b>au</b> Portugal, <b>au</b> Canada</td><td class="fr"><b>du</b> Portugal, <b>du</b> Canada</td></tr>
+        <tr><td>plural<br><span class="muted small">les États-Unis, les Pays-Bas</span></td><td class="fr"><b>aux</b> États-Unis</td><td class="fr"><b>des</b> États-Unis</td></tr>
+        <tr><td>oraș</td><td class="fr"><b>à</b> Paris, <b>à</b> Londres</td><td class="fr"><b>de</b> Paris, <b>de</b> Londres</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Capcane:</b> <i>le Mexique, le Cambodge, le Mozambique</i> se termină în -e, dar sunt masculine: <b>au</b> Mexique. Ca subiect țara își păstrează articolul: <i><b>La</b> France est belle</i>, <i>J'aime <b>le</b> Canada</i>.</p>
+  </section>
+
+  <section class="panel" id="t10">
+    <h2><span class="num">10</span>Corpul: articol hotărât, nu posesiv</h2>
+    <p>În franceză, la părțile corpului folosim de obicei <b>le, la, les</b>, nu mon, ma, mes, când e clar al cui e.</p>
+    <ul class="ex">
+      <li class="yes"><span class="fr" lang="fr">Elle a <b>les</b> yeux bleus. Il a <b>les</b> cheveux courts.</span><span class="ro">Are ochii albaștri. Are părul scurt.</span></li>
+      <li class="yes"><span class="fr" lang="fr">Je me lave <b>les</b> mains.</span><span class="ro">Mă spăl pe mâini.</span></li>
+      <li class="no"><span class="fr" lang="fr">Je me lave mes mains.</span><span class="ro">greșit: verbul reflexiv arată deja al cui</span></li>
+      <li class="yes"><span class="fr" lang="fr">J'ai mal <b>à la</b> tête / <b>au</b> ventre / <b>aux</b> dents.</span><span class="ro">Mă doare capul / burta / dinții.</span></li>
+    </ul>
+  </section>
+
+  <section class="panel" id="t11">
+    <h2><span class="num">11</span>Verbe care cer à sau de (și se contractă)</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>Verb</th><th>Exemplu</th><th>Înseamnă</th></tr></thead>
+      <tbody>
+        <tr><td class="fr">penser <b>à</b></td><td class="fr">Je pense <b>aux</b> vacances.</td><td>Mă gândesc la vacanță.</td></tr>
+        <tr><td class="fr">parler <b>à</b> / parler <b>de</b></td><td class="fr">Je parle <b>au</b> prof <b>du</b> problème.</td><td>Vorbesc cu profesorul despre problemă.</td></tr>
+        <tr><td class="fr">téléphoner <b>à</b></td><td class="fr">Je téléphone <b>à la</b> mère de Julie.</td><td>O sun pe mama Juliei.</td></tr>
+        <tr><td class="fr">s'occuper <b>de</b></td><td class="fr">Elle s'occupe <b>des</b> enfants.</td><td>Are grijă de copii.</td></tr>
+        <tr><td class="fr">se souvenir <b>de</b></td><td class="fr">Je me souviens <b>du</b> voyage.</td><td>Îmi amintesc de călătorie.</td></tr>
+        <tr><td class="fr">avoir peur <b>de</b></td><td class="fr">Il a peur <b>des</b> chiens.</td><td>Îi e frică de câini.</td></tr>
+        <tr><td class="fr">préférer A <b>à</b> B</td><td class="fr">Je préfère le thé <b>au</b> café.</td><td>Prefer ceaiul cafelei.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section class="panel" id="t12">
+    <h2><span class="num">12</span>Cum aleg, pas cu pas</h2>
+    <ol class="small" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+      <li>Vine înainte <b>à</b> sau <b>de</b> și urmează le / les? → <b>au, aux, du, des</b>.</li>
+      <li>Propoziția e <b>negativă</b> (fără être, fără ne… que) și articolul ar fi un / une / des / du / de la? → <b>de / d'</b>.</li>
+      <li>Înainte e un cuvânt de <b>cantitate</b> (beaucoup, peu, un kilo)? → <b>de / d'</b>.</li>
+      <li>E vorba de ceva <b>anume, unic sau în general</b> (după aimer, détester, préférer)? → <b>le, la, l', les</b>.</li>
+      <li>Se poate <b>număra</b> (unu, doi)? → <b>un, une, des</b>.</li>
+      <li>Nu se numără, e „puțin din”? → <b>du, de la, de l'</b>.</li>
+      <li>Meserie după être, după sans, ni… ni, en, oraș? → <b>nimic</b>.</li>
+    </ol>
+    <p class="muted small">Gata cu teoria? Încearcă <a href="#scriu" data-go="scriu">exercițiile de completat</a> sau <a href="#aleg" data-go="aleg">exercițiile cu variante</a>.</p>
+  </section>
+  </div>
+
+  <!-- ================= EXERCIȚII ================= -->
+  <section class="panel view" id="setup" hidden>
+    <h2 id="setupTitle"></h2>
+    <p class="muted" id="setupText"></p>
+    <h3>Câte exerciții</h3>
+    <div class="seg" id="lenSeg">
+      <button type="button" data-len="10">10</button>
+      <button type="button" data-len="20">20</button>
+      <button type="button" data-len="0">Toate</button>
+    </div>
+    <p class="muted small" id="setupInfo"></p>
+    <button class="btn primary" id="startBtn" type="button">Începe</button>
+  </section>
+
+  <section class="panel view" id="quiz" hidden>
+    <div class="qmeta"><span id="qCount"></span><span id="qScore"></span></div>
+    <div class="progress"><i id="qBar"></i></div>
+    <div class="prompt" id="qPrompt" lang="fr"></div>
+    <div class="hintline" id="qHint"></div>
+    <div class="opts" id="qOpts"></div>
+    <div id="qTypeBox" hidden>
+      <input class="answer" id="qInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Răspunsul tău" placeholder="Scrie ce lipsește…">
+      <div class="accents" id="accents" style="margin-top:8px"></div>
+    </div>
+    <div id="qFb"></div>
+    <div class="actions">
+      <button class="btn" id="skipBtn" type="button">Nu știu</button>
+      <button class="btn primary" id="goBtn" type="button">Verifică</button>
+    </div>
+    <div style="display:flex;justify-content:flex-end"><button class="tool" id="quitBtn" type="button">Oprește</button></div>
+  </section>
+
+  <section class="panel view" id="result" hidden>
+    <h2>Rezultat</h2>
+    <div class="big"><b id="rScore"></b><span class="muted" id="rPct"></span></div>
+    <p id="rMsg"></p>
+    <div class="actions">
+      <button class="btn primary" id="retryWrongBtn" type="button">Reia greșelile</button>
+      <button class="btn" id="againBtn" type="button">Alt set</button>
+      <button class="btn" id="theoryBtn" type="button">Înapoi la teorie</button>
+    </div>
+    <div id="rListBox">
+      <h3 style="margin-bottom:8px">Greșeli</h3>
+      <ul class="mist" id="rList"></ul>
+    </div>
+  </section>
+
+  <footer id="foot">Prezentul indicativ, ca în restul site-ului. La „Completez eu” accentele nu sunt obligatorii, iar literele mari nu contează. Unde lipește articolul de cuvânt (d', l'), scrie doar articolul cu apostrof.</footer>
+</div>
+
+<script>
+// ---------- exercises ----------
+// Completez eu: [propoziție cu ___, răspunsuri acceptate (separate prin |), traducere, explicație]
+const FILL = [
+["Je ne mange jamais ___ viande.", "de", "Nu mănânc niciodată carne.", "După ne… jamais, partitivul de la devine de."],
+["Ce n'est pas ___ vin, c'est du jus.", "du", "Nu e vin, e suc.", "După être articolul nu se schimbă la negativ: ce n'est pas du vin."],
+["Il y a ___ jolies maisons dans ce village.", "de", "Sunt niște case frumoase în satul ăsta.", "Adjectiv înaintea substantivului la plural: des devine de."],
+["Je pense souvent ___ vacances d'été.", "aux", "Mă gândesc des la vacanța de vară.", "penser à + les vacances = aux vacances."],
+["Il revient ___ Canada demain.", "du", "Se întoarce din Canada mâine.", "le Canada e masculin: de + le = du."],
+["Elle revient ___ Italie.", "d'", "Se întoarce din Italia.", "Țară feminină: de / d' fără articol (d'Italie)."],
+["Nous habitons ___ Pays-Bas.", "aux", "Locuim în Țările de Jos.", "Țară la plural: à + les = aux."],
+["Tu as ___ chance !", "de la", "Ai noroc!", "O calitate, nenumărabilă, feminină: de la chance."],
+["Mon frère joue ___ guitare.", "de la", "Fratele meu cântă la chitară.", "Instrument: jouer de + la guitare (nu se contractă)."],
+["Les enfants jouent ___ cartes.", "aux", "Copiii joacă cărți.", "Joc: jouer à + les cartes = aux cartes."],
+["J'ai besoin ___ conseils.", "de", "Am nevoie de sfaturi.", "avoir besoin de + des (niște) → rămâne doar de."],
+["J'ai besoin ___ voiture de mon père.", "de la", "Am nevoie de mașina tatălui meu.", "Un lucru anume (mașina tatălui): de + la voiture."],
+["Le samedi, je fais ___ natation.", "de la", "Sâmbăta fac înot.", "faire de + activitate: la natation → de la natation."],
+["Je n'ai pas ___ frère.", "de", "Nu am frate.", "Negație cu avoir: un frère → pas de frère."],
+["Il ne boit que ___ eau.", "de l'", "Bea doar apă.", "Ne… que = doar, nu e negație: partitivul rămâne (de l'eau)."],
+["Je voudrais un peu ___ sucre.", "de", "Aș vrea puțin zahăr.", "După un peu (cantitate) vine doar de."],
+["La plupart ___ étudiants sont fatigués.", "des", "Majoritatea studenților sunt obosiți.", "Excepție: la plupart des."],
+["J'adore ___ fromage français.", "le", "Ador brânza franțuzească.", "După adorer: lucrul în general → articol hotărât."],
+["Je mange ___ fromage tous les soirs.", "du", "Mănânc brânză în fiecare seară.", "Mănânc o cantitate: partitiv masculin du."],
+["Je n'aime pas ___ café.", "le", "Nu-mi place cafeaua.", "Articolul hotărât rămâne la negativ: je n'aime pas le café."],
+["___ lundi, je vais à la piscine.", "Le", "Lunea merg la piscină.", "În fiecare luni: le lundi. Fără articol ar fi doar lunea asta."],
+["Il travaille ___ hôpital.", "à l'", "Lucrează la spital.", "h mut: à + l'hôpital (nu se contractă)."],
+["C'est le livre ___ professeur.", "du", "E cartea profesorului.", "de + le professeur = du professeur."],
+["La couleur ___ arbres change en automne.", "des", "Culoarea copacilor se schimbă toamna.", "de + les arbres = des arbres (contractat)."],
+["Elle a ___ yeux bleus.", "les", "Are ochii albaștri.", "Corpul: avoir + les yeux / les cheveux."],
+["Il a mal ___ tête.", "à la", "Îl doare capul.", "avoir mal à + la tête."],
+["J'ai mal ___ dents.", "aux", "Mă dor dinții.", "avoir mal à + les dents = aux dents."],
+["Elle parle ___ voisin.", "au", "Vorbește cu vecinul.", "parler à quelqu'un: à + le voisin = au voisin. (du voisin = despre vecin)"],
+["On parle ___ problème de Marc.", "du", "Vorbim despre problema lui Marc.", "parler de quelque chose: de + le problème = du."],
+["Elle va ___ Havre.", "au", "Merge la Le Havre.", "Le din numele orașului se contractă: au Havre."],
+["C'est ___ héros du film.", "le", "E eroul filmului.", "h aspirat: le héros (fără elisiune)."],
+["___ hôtel est complet.", "L'", "Hotelul e plin.", "h mut: l'hôtel."],
+["Il y a ___ monde dans la rue.", "du", "E lume pe stradă.", "Il y a du monde = e (multă) lume."],
+["Ce ne sont pas ___ amis.", "des", "Nu sunt prieteni.", "După être, des rămâne la negativ."],
+["Il n'y a plus ___ pain.", "de", "Nu mai e pâine.", "Il y a nu e être: la negativ du pain → de pain."],
+["J'achète une bouteille ___ lait.", "de", "Cumpăr o sticlă de lapte.", "Recipient / cantitate + de, fără articol."],
+["Elle mange beaucoup ___ légumes.", "de", "Mănâncă multe legume.", "beaucoup de, fără articol."],
+["Bien ___ gens pensent ça.", "des", "Mulți oameni cred asta.", "Excepție: bien des = mulți."],
+["Il a ___ patience.", "de la", "Are răbdare.", "Calitate nenumărabilă, feminină: de la patience."],
+["Il n'a pas ___ patience.", "de", "Nu are răbdare.", "Negație cu avoir: de la → de."],
+["Ce n'est pas ___ eau, c'est de la vodka !", "de l'", "Nu e apă, e vodcă!", "Contrast cu être: articolul rămâne (de l'eau)."],
+["Le prof parle ___ élèves.", "aux", "Profesorul vorbește cu elevii.", "parler à + les élèves = aux élèves."],
+["Il sort ___ bureau à six heures.", "du", "Iese de la birou la ora șase.", "sortir de + le bureau = du bureau."],
+["Je téléphone ___ mère de Julie.", "à la", "O sun pe mama Juliei.", "téléphoner à + la mère (nu se contractă)."],
+["Elle est ___ États-Unis.", "aux", "E în Statele Unite.", "Țară la plural: aux États-Unis."],
+["Il vient ___ Japon.", "du", "Vine din Japonia.", "le Japon e masculin: venir du Japon."],
+["Je reste ___ maison ce soir.", "à la", "Rămân acasă în seara asta.", "Expresie: à la maison = acasă."],
+["Il y a ___ neige sur la route.", "de la", "E zăpadă pe drum.", "Nenumărabil, feminin: de la neige."],
+["Tu veux ___ pommes ?", "des", "Vrei mere?", "Mere se pot număra, plural nehotărât: des pommes."],
+["Je déteste ___ pluie.", "la", "Urăsc ploaia.", "După détester: articol hotărât."],
+["Nous faisons ___ ski en hiver.", "du", "Facem schi iarna.", "faire de + le ski = du ski."],
+["___ Mexique est un grand pays.", "Le", "Mexicul e o țară mare.", "Țara ca subiect are articol; le Mexique e masculin, deși se termină în -e."],
+["Elle a une robe ___ soie.", "de|en", "Are o rochie de mătase.", "Material: de soie / en soie, fără articol."],
+["Il prend ___ médicaments chaque jour.", "des", "Ia medicamente în fiecare zi.", "Plural, se pot număra: des médicaments."],
+["Je n'ai jamais vu ___ éléphant.", "d'", "N-am văzut niciodată un elefant.", "Negație: un → de, înainte de vocală d'."],
+["C'est ___ histoire incroyable.", "une", "E o poveste incredibilă.", "h mut, feminin: une histoire."],
+["C'est ___ médecin très connu.", "un", "E un medic foarte cunoscut.", "După c'est meseria are articol: c'est un médecin."],
+["Devant la maison, il y a ___ grands arbres.", "de", "În fața casei sunt niște copaci mari.", "Adjectiv înainte: des grands arbres → de grands arbres."],
+["Je pense ___ examen de demain.", "à l'", "Mă gândesc la examenul de mâine.", "penser à + l'examen (vocală, nu se contractă)."],
+["Nous parlons ___ histoire de France.", "de l'", "Vorbim despre istoria Franței.", "parler de + l'histoire (h mut)."],
+["Le chat dort ___ soleil.", "au", "Pisica doarme la soare.", "à + le soleil = au soleil."],
+["Ajoutez ___ huile d'olive.", "de l'", "Adăugați ulei de măsline.", "Partitiv înainte de h mut: de l'huile."],
+["Je ne bois pas ___ alcool.", "d'", "Nu beau alcool.", "Negație: de l'alcool → d'alcool."],
+["Il a peur ___ hasard.", "du", "Îi e frică de întâmplare.", "h aspirat: de + le hasard = du hasard (nu de l')."]
+];
+
+// Aleg varianta: [propoziție cu ___ (sau traducere de ales), variante (prima = corectă), traducere, explicație]
+const CHOICE = [
+["Je n'ai pas ___ voiture.", ["de","une","du","des"], "Nu am mașină.", "Negație cu avoir: une → de."],
+["Ce n'est pas ___ problème.", ["un","de","une","d'un"], "Nu e o problemă.", "După être articolul rămâne; problème e masculin: un problème."],
+["Elle a ___ beaux yeux.", ["de","des","du","d'"], "Are niște ochi frumoși.", "Adjectiv înaintea substantivului la plural: de beaux yeux."],
+["Je vais ___ États-Unis.", ["aux","au","en","à les"], "Merg în Statele Unite.", "Țară la plural: aux."],
+["Je vais ___ Espagne.", ["en","à l'","au","à la"], "Merg în Spania.", "Țară feminină: en Espagne."],
+["Il revient ___ Portugal.", ["du","de","de le","au"], "Se întoarce din Portugalia.", "le Portugal: de + le = du."],
+["Elle joue ___ violon.", ["du","au","de le","le"], "Cântă la vioară.", "Instrument: jouer du violon."],
+["Ils jouent ___ tennis.", ["au","du","à le","le"], "Joacă tenis.", "Sport: jouer au tennis."],
+["J'aime ___ musique classique.", ["la","de la","une","de"], "Îmi place muzica clasică.", "După aimer: articol hotărât."],
+["Je n'aime pas ___ bière.", ["la","de","de la","une"], "Nu-mi place berea.", "Articolul hotărât rămâne la negativ."],
+["Je ne bois pas ___ bière.", ["de","de la","du","des"], "Nu beau bere.", "Negație cu un verb obișnuit: de la bière → de bière."],
+["Il ne mange que ___ légumes.", ["des","de","du","d'"], "Mănâncă doar legume.", "Ne… que nu e negație: des rămâne."],
+["C'est la maison ___ voisins.", ["des","de les","aux","du"], "E casa vecinilor.", "de + les = des."],
+["Le chien ___ voisin aboie.", ["du","de le","au","des"], "Câinele vecinului latră.", "de + le = du."],
+["Je parle ___ directeur.", ["au","à le","à la","aux"], "Vorbesc cu directorul.", "parler à + le = au."],
+["Elle a besoin ___ aide.", ["d'","de l'","de la","du"], "Are nevoie de ajutor.", "avoir besoin de + ajutor oarecare: doar d'."],
+["Il y a beaucoup ___ voitures.", ["de","des","de les","du"], "Sunt multe mașini.", "beaucoup de, fără articol."],
+["Majoritatea oamenilor sunt drăguți.", ["La plupart des gens sont gentils.","La plupart de gens sont gentils.","La plupart les gens sont gentils.","Le plupart des gens sont gentils."], "", "Excepție: la plupart des (la e feminin)."],
+["Elle a mal ___ ventre.", ["au","à la","du","à le"], "O doare burta.", "avoir mal à + le ventre = au ventre."],
+["Il habite ___ Havre.", ["au","à Le","à le","en"], "Locuiește la Le Havre.", "Le din nume se contractă: au Havre."],
+["___ hibou chante la nuit.", ["Le","L'","La","Les"], "Bufnița cântă noaptea.", "h aspirat, masculin: le hibou."],
+["___ homme est là.", ["L'","Le","La","Les"], "Bărbatul e acolo.", "h mut: l'homme."],
+["Je vais ___ hôpital.", ["à l'","au","à la","à le"], "Merg la spital.", "h mut: à l'hôpital, fără contracție."],
+["Elle fait ___ yoga.", ["du","de la","le","de"], "Face yoga.", "faire de + le yoga = du yoga."],
+["Il fait ___ escalade.", ["de l'","du","de la","l'"], "Face escaladă.", "faire de + l'escalade (vocală)."],
+["Nous avons ___ chance.", ["de la","du","la","de"], "Avem noroc.", "Calitate nenumărabilă, feminină: de la chance."],
+["Je voudrais ___ eau, s'il vous plaît.", ["de l'","du","de la","d'"], "Aș vrea apă, vă rog.", "Partitiv înainte de vocală: de l'eau."],
+["Tu veux un verre ___ eau ?", ["d'","de l'","du","de la"], "Vrei un pahar cu apă?", "După un verre (cantitate) doar d'."],
+["Il n'y a plus ___ lait.", ["de","du","le","de le"], "Nu mai e lapte.", "Negație cu il y a: du → de."],
+["Ce n'est pas ___ lait, c'est de la crème.", ["du","de","des","de le"], "Nu e lapte, e smântână.", "Cu être articolul rămâne la negativ: ce n'est pas du lait."],
+["___ samedi, je dors tard.", ["Le","Un","Du","Au"], "Sâmbăta dorm până târziu.", "În fiecare sâmbătă: le samedi."],
+["Elle a ___ cheveux blonds.", ["les","de","du","la"], "Are părul blond.", "Corpul: avoir les cheveux…"],
+["Il se lave ___ mains.", ["les","ses","des","aux"], "Se spală pe mâini.", "Cu verb reflexiv, la corp: les mains (nu ses)."],
+["Je viens ___ France.", ["de","de la","du","d'"], "Vin din Franța.", "Țară feminină: venir de France, fără articol."],
+["Je viens ___ Brésil.", ["du","de","de le","au"], "Vin din Brazilia.", "le Brésil e masculin: du Brésil."],
+["Le prix ___ essence augmente.", ["de l'","du","de la","d'"], "Prețul benzinei crește.", "de + l'essence (vocală): de l'essence."],
+["E inginer.", ["Il est ingénieur.","Il est un ingénieur.","C'est ingénieur.","Il est d'ingénieur."], "", "Meserie după il est: fără articol."],
+["C'est ___ ingénieur brillant.", ["un","une","d'","de"], "E un inginer strălucit.", "După c'est meseria are articol; ingénieur e masculin."],
+["Je suis ___ cinéma.", ["au","à la","du","à le"], "Sunt la cinema.", "à + le cinéma = au."],
+["Il sort ___ maison.", ["de la","du","à la","de"], "Iese din casă.", "sortir de + la maison (nu se contractă)."],
+["On parle ___ vacances de Noël.", ["des","de les","du","aux"], "Vorbim despre vacanța de Crăciun.", "parler de + les vacances = des."],
+["Elle offre des fleurs ___ invités.", ["aux","des","à les","au"], "Le oferă flori invitaților.", "offrir à + les invités = aux."],
+["Mange ___ fruits !", ["des","de","du","de les"], "Mănâncă fructe!", "Se pot număra, plural nehotărât: des fruits."],
+["Il y a ___ vieilles églises ici.", ["de","d'","du","de la"], "Sunt niște biserici vechi aici.", "Adjectiv înainte: des vieilles → de vieilles."],
+["Nu am frați.", ["Je n'ai pas de frères.","Je n'ai pas des frères.","Je n'ai pas frères.","Je n'ai pas du frères."], "", "Negație cu avoir: des → de."],
+["Nu e un câine, e o pisică.", ["Ce n'est pas un chien, c'est un chat.","Ce n'est pas de chien, c'est un chat.","Ce n'est pas chien, c'est un chat.","Ce n'est pas d'un chien, c'est un chat."], "", "Cu être (ce n'est pas) articolul rămâne. Le chat e masculin."],
+["Îmi place cafeaua, dar nu beau cafea seara.", ["J'aime le café, mais je ne bois pas de café le soir.","J'aime du café, mais je ne bois pas de café le soir.","J'aime le café, mais je ne bois pas du café le soir.","J'aime café, mais je ne bois pas de café le soir."], "", "aimer + le (general); boire la negativ → de."],
+["Copiii merg la școală.", ["Les enfants vont à l'école.","Les enfants vont au école.","Les enfants vont à la école.","Les enfants vont à le école."], "", "Vocală: à l'école, fără contracție."],
+["Nous partons ___ Mexique.", ["au","en","à","du"], "Plecăm în Mexic.", "le Mexique e masculin (deși se termină în -e): au Mexique."],
+["Il y a ___ monde ici !", ["du","de","des","de le"], "E multă lume aici!", "Expresie: il y a du monde."],
+["J'achète ___ pain et ___ confiture.", ["du / de la","du / du","de / de","le / de la"], "Cumpăr pâine și gem.", "Cantitate nedefinită: du pain (m.), de la confiture (f.)."],
+["Il a ___ amis à Paris, mais il n'a pas ___ amis à Lyon.", ["des / d'","des / des","d' / d'","des / de"], "Are prieteni la Paris, dar nu are prieteni la Lyon.", "Afirmativ des, negativ d' (înainte de vocală, de devine d')."],
+["___ Japonais mangent ___ riz.", ["Les / du","Des / du","Les / le","Les / de"], "Japonezii mănâncă orez.", "Poporul în general: les; o cantitate de orez: du."],
+["Je préfère ___ thé ___ café.", ["le / au","le / du","du / au","le / que le"], "Prefer ceaiul cafelei.", "préférer le A à le B → le thé au café."],
+["Il pense ___ avenir.", ["à l'","au","de l'","à le"], "Se gândește la viitor.", "penser à + l'avenir (vocală)."],
+["Elle s'occupe ___ enfants.", ["des","aux","de les","les"], "Are grijă de copii.", "s'occuper de + les = des."],
+["Je me souviens ___ voyage.", ["du","au","de le","le"], "Îmi amintesc de călătorie.", "se souvenir de + le voyage = du."],
+["Il a peur ___ chiens.", ["des","aux","de les","du"], "Îi e frică de câini.", "avoir peur de + les chiens (în general) = des."],
+["C'est ___ heure de partir.", ["l'","la","le","une"], "E ora de plecare.", "h mut, feminin: l'heure."],
+["Un kilo ___ pommes, s'il vous plaît.", ["de","des","de les","du"], "Un kilogram de mere, vă rog.", "Cantitate + de, fără articol."],
+["Il boit trop ___ alcool.", ["d'","de l'","du","de"], "Bea prea mult alcool.", "trop de → d' înainte de vocală."],
+["Je rentre ___ travail à 18 heures.", ["du","de le","au","de"], "Mă întorc de la muncă la ora 18.", "rentrer de + le travail = du travail."],
+["Le train ___ Lyon arrive.", ["de","du","de la","des"], "Trenul de Lyon sosește.", "Oraș: de Lyon, fără articol."],
+["Il faut ___ courage pour ça.", ["du","de","le","de la"], "E nevoie de curaj pentru asta.", "Calitate nenumărabilă, masculin: du courage."]
+];
+
+// ---------- helpers ----------
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const deacc = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+const norm = s => String(s).toLowerCase().replace(/[’‘`´]/g, "'").replace(/[?!.,;:«»"“”…]+/g, " ").replace(/\s*'\s*/g, "'").replace(/\s+/g, " ").trim();
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const store = {
+  get(k, d){ try { const v = localStorage.getItem("frart:" + k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem("frart:" + k, JSON.stringify(v)); } catch(e){} }
+};
+const $ = id => document.getElementById(id);
+
+// Put the answer into the blank, matching capitals at the start of a sentence.
+function fill(sentence, answers){
+  const parts = sentence.split("___");
+  let out = parts[0];
+  for (let i = 1; i < parts.length; i++) {
+    let a = answers[i - 1];
+    const before = out.trimEnd();
+    if (before === "" || /[.?!—]$/.test(before)) a = a.charAt(0).toUpperCase() + a.slice(1);
+    else a = /^(C'est|Ce |Il |Ils |Elle|Qu|Qui|Voici|Voilà)/.test(a) ? a.charAt(0).toLowerCase() + a.slice(1) : a;
+    // elision: "Est-ce qu'" + "il y a" stays as is; "d'" joins the next word
+    out += a + (/'$/.test(a) ? parts[i].replace(/^\s+/, "") : parts[i]);
+  }
+  return out;
+}
+
+// ---------- tabs ----------
+const MODES = {
+  scriu: {title: "Completez eu", text: "Citește propoziția și traducerea, apoi scrie articolul care lipsește (un, une, des, le, la, l', les, au, aux, du, de la, de l', de, d'…). Gândește-te la regulă înainte să scrii.", items: FILL, typing: true},
+  aleg: {title: "Aleg varianta", text: "Alege varianta corectă din cele patru. După fiecare răspuns vezi și de ce.", items: CHOICE, typing: false}
+};
+$("nScriu").textContent = FILL.length + " exerciții";
+$("nAleg").textContent = CHOICE.length + " exerciții";
+let tab = "teorie", mode = null, len = store.get("len", 20);
+let test = [], qi = 0, score = 0, answered = false, wrong = [];
+
+function showView(id){ document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== id); }
+function setTab(t, keepScroll){
+  tab = t;
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  if (t === "teorie") showView("teorie");
+  else { mode = t; renderSetup(); showView("setup"); }
+  if (!keepScroll) window.scrollTo(0, 0);
+  try { history.replaceState(null, "", "#" + t); } catch(e){}
+}
+document.querySelector(".tabs").onclick = e => { const b = e.target.closest("button"); if (b) setTab(b.dataset.tab); };
+document.addEventListener("click", e => { const a = e.target.closest("a[data-go]"); if (a) { e.preventDefault(); setTab(a.dataset.go); } });
+
+// ---------- setup ----------
+function renderSetup(){
+  const m = MODES[mode];
+  $("setupTitle").textContent = m.title;
+  $("setupText").textContent = m.text;
+  document.querySelectorAll("#lenSeg button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.len === len));
+  const best = store.get("best-" + mode, null);
+  $("setupInfo").textContent = m.items.length + " exerciții în total, în ordine amestecată" + (best != null ? " · cel mai bun rezultat la un set complet: " + best + "%" : "") + ".";
+}
+$("lenSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; len = +b.dataset.len; store.set("len", len); renderSetup(); };
+$("startBtn").onclick = () => newTest();
+
+function newTest(){
+  const m = MODES[mode];
+  const n = len || m.items.length;
+  const items = shuffle(m.items.slice()).slice(0, n).map(x => m.typing
+    ? {typing: true, s: x[0], acc: x[1].split("|"), ro: x[2], why: x[3]}
+    : {typing: false, s: x[0], answer: x[1][0], opts: shuffle(x[1].slice()), ro: x[2], why: x[3]});
+  start(items, !len);
+}
+let fullRun = false;
+function start(items, full){
+  test = items; qi = 0; score = 0; wrong = []; fullRun = !!full;
+  showView("quiz"); window.scrollTo(0, 0); renderQ();
+}
+
+// ---------- running ----------
+const isSentence = q => !q.typing && !q.s.includes("___");
+function renderQ(){
+  const q = test[qi]; answered = false;
+  $("qCount").textContent = "Exercițiul " + (qi + 1) + " din " + test.length;
+  $("qScore").textContent = "Corecte: " + score;
+  $("qBar").style.width = (qi / test.length * 100) + "%";
+  const p = $("qPrompt");
+  if (isSentence(q)) { p.textContent = q.s; p.lang = "ro"; }
+  else { p.lang = "fr"; p.innerHTML = q.s.split("___").map(esc).join('<span class="blank">' + (q.typing ? "&nbsp;" : "?") + '</span>'); }
+  $("qHint").textContent = isSentence(q) ? "" : "„" + q.ro + "”";
+  $("qFb").innerHTML = "";
+  if (!q.typing) {
+    $("qTypeBox").hidden = true; $("qOpts").hidden = false;
+    $("qOpts").innerHTML = q.opts.map((o, i) => '<button type="button" class="opt" lang="fr" data-i="' + i + '"><kbd>' + (i + 1) + '</kbd><span>' + esc(o) + '</span></button>').join("");
+    $("goBtn").hidden = true;
+  } else {
+    $("qOpts").hidden = true; $("qOpts").innerHTML = "";
+    $("qTypeBox").hidden = false;
+    const inp = $("qInput"); inp.value = ""; inp.className = "answer"; inp.disabled = false;
+    $("accents").innerHTML = "é è ê à ç ' ù".split(" ").map(ch => '<button type="button" tabindex="-1">' + ch + '</button>').join("");
+    $("goBtn").hidden = false; $("goBtn").textContent = "Verifică";
+    inp.focus({preventScroll: true});
+  }
+  $("skipBtn").hidden = false;
+}
+function correctSentence(q){
+  if (q.typing) return fill(q.s, [q.acc[0]]);
+  if (isSentence(q)) return q.answer;
+  return fill(q.s, q.answer.split(" / "));
+}
+function finishQ(ok, note, yours){
+  answered = true;
+  const q = test[qi];
+  if (ok) score++; else wrong.push({q, yours});
+  const other = q.typing && q.acc.length > 1 ? '<span class="small muted">Se acceptă și: ' + q.acc.slice(1).map(esc).join(", ") + '</span>' : "";
+  $("qFb").innerHTML = '<div class="fb ' + (ok ? "right" : "wrong") + '" role="status"><strong class="v">' + (ok ? "Corect!" : "Greșit") + '</strong>' +
+    (note ? '<span>' + esc(note) + '</span>' : "") +
+    '<span class="sent" lang="fr">' + esc(correctSentence(q)) + '</span>' + other +
+    '<span class="small muted">' + esc(q.ro) + '</span>' +
+    '<span class="why">' + esc(q.why) + '</span></div>';
+  $("qScore").textContent = "Corecte: " + score;
+  $("qBar").style.width = ((qi + 1) / test.length * 100) + "%";
+  $("skipBtn").hidden = true;
+  $("goBtn").hidden = false;
+  $("goBtn").textContent = qi + 1 < test.length ? "Următorul →" : "Vezi rezultatul";
+  $("goBtn").focus({preventScroll: true});
+}
+function choose(i){
+  const q = test[qi]; if (answered || q.typing) return;
+  document.querySelectorAll("#qOpts .opt").forEach((b, j) => {
+    b.disabled = true;
+    if (q.opts[j] === q.answer) b.classList.add("right"); else if (j === i) b.classList.add("wrong");
+  });
+  finishQ(q.opts[i] === q.answer, "", q.opts[i]);
+}
+function check(){
+  const q = test[qi], inp = $("qInput");
+  if (!inp.value.trim()) { inp.focus(); return; }
+  const t = norm(inp.value).replace(/'$/, ""), acc = q.acc.map(a => norm(a).replace(/'$/, ""));  // "d" counts as "d'"
+  let r = null;
+  if (acc.includes(t)) r = "exact";
+  else if (acc.map(deacc).includes(deacc(t))) r = "accents";
+  inp.disabled = true; inp.classList.add(r ? "right" : "wrong");
+  finishQ(!!r, r === "accents" ? "Atenție la accente." : "", inp.value.trim());
+}
+function skip(){
+  if (answered) return;
+  const q = test[qi];
+  if (!q.typing) document.querySelectorAll("#qOpts .opt").forEach((b, j) => { b.disabled = true; if (q.opts[j] === q.answer) b.classList.add("right"); });
+  else { $("qInput").disabled = true; $("qInput").classList.add("wrong"); }
+  finishQ(false, "", "(nu știu)");
+}
+function advance(){ if (qi + 1 < test.length) { qi++; renderQ(); } else results(); }
+$("qOpts").onclick = e => { const b = e.target.closest(".opt"); if (b) choose(+b.dataset.i); };
+$("goBtn").onclick = () => answered ? advance() : check();
+$("skipBtn").onclick = skip;
+$("quitBtn").onclick = () => { if (qi > 0 || answered) { test = test.slice(0, qi + (answered ? 1 : 0)); fullRun = false; results(); } else setTab(mode); };
+$("qInput").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); e.stopPropagation(); answered ? advance() : check(); } });
+$("accents").addEventListener("mousedown", e => e.preventDefault());
+$("accents").onclick = e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const inp = $("qInput"); if (inp.disabled) return;
+  const s = inp.selectionStart ?? inp.value.length, en = inp.selectionEnd ?? s;
+  inp.value = inp.value.slice(0, s) + b.textContent + inp.value.slice(en);
+  inp.setSelectionRange(s + 1, s + 1); inp.focus();
+};
+document.addEventListener("keydown", e => {
+  if ($("quiz").hidden || e.target.tagName === "INPUT") return;
+  const q = test[qi];
+  if (!answered && !q.typing && /^[1-4]$/.test(e.key) && q.opts[+e.key - 1] != null) { e.preventDefault(); choose(+e.key - 1); }
+  else if (answered && e.key === "Enter" && e.target !== $("goBtn")) { e.preventDefault(); advance(); }
+});
+
+// ---------- results ----------
+function results(){
+  const n = test.length, pct = n ? Math.round(score / n * 100) : 0;
+  $("rScore").textContent = score + " / " + n;
+  $("rPct").textContent = pct + "%";
+  $("rMsg").textContent = pct === 100 ? "Perfect! Nicio greșeală." : pct >= 85 ? "Foarte bine!" : pct >= 60 ? "Bine. Uită-te la greșelile de mai jos și reia-le." : "Mai citește o dată teoria, apoi reia exercițiile.";
+  if (fullRun) { const b = store.get("best-" + mode, null); if (b == null || pct > b) store.set("best-" + mode, pct); }
+  $("retryWrongBtn").hidden = !wrong.length;
+  $("rListBox").hidden = !wrong.length;
+  $("rList").innerHTML = wrong.map(w => {
+    const q = w.q;
+    return '<li><span lang="fr">' + esc(q.s) + '</span><span class="small">Tu: <span class="yours" lang="fr">' + esc(w.yours) + '</span></span><span class="small">Corect: <span class="good" lang="fr">' + esc(correctSentence(q)) + '</span></span><span class="small muted">' + esc(q.why) + '</span></li>';
+  }).join("");
+  showView("result"); window.scrollTo(0, 0);
+}
+$("retryWrongBtn").onclick = () => start(shuffle(wrong.map(w => w.q)).map(q => q.typing ? q : {...q, opts: shuffle(q.opts.slice())}), false);
+$("againBtn").onclick = () => newTest();
+$("theoryBtn").onclick = () => setTab("teorie");
+
+const h = location.hash.slice(1);
+setTab(MODES[h] ? h : "teorie", true);
+if (h && /^t\d+$/.test(h)) { const el = $(h); if (el) el.scrollIntoView(); }
+</script>
+</body>
+</html>
