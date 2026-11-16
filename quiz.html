@@ -137,6 +137,7 @@ footer{color:var(--muted);font-size:.82rem}
     </div>
 
     <p class="muted small" id="setupInfo" style="margin:0"></p>
+    <p class="small" id="progInfo" style="margin:0"></p>
     <button class="btn primary" id="startBtn" type="button">Începe testul</button>
   </section>
 
@@ -407,12 +408,22 @@ const $ = id => document.getElementById(id);
 function show(id){ ["setup","quiz","result"].forEach(s => $(s).hidden = s !== id); window.scrollTo(0, 0); }
 
 // ---------- setup ----------
+// Progress: last answer per card (1 right, 0 wrong), kept in this browser.
+let prog = store.get("prog", {});
+function catStats(ids){
+  let total = 0, ok = 0, bad = 0;
+  CARDS.forEach(c => { if (!ids.has(c.cat)) return; total++; const v = prog[c.id]; if (v === 1) ok++; else if (v === 0) bad++; });
+  return {total, done: ok + bad, ok, bad};
+}
 function renderSetup(){
   $("chips").innerHTML = DATA.map(c => {
-    const b = best[c.id];
+    const b = best[c.id], st = catStats(new Set([c.id]));
     return '<button type="button" class="chip" data-id="' + c.id + '" aria-pressed="' + selected.has(c.id) + '">' + esc(c.name) +
-      '<small>' + (b != null ? "record " + b + "%" : c.cards.length) + '</small></button>';
+      '<small>' + (st.done ? st.done + "/" + st.total + " · ✓" + st.ok + " ✗" + st.bad : c.cards.length) + (b != null ? " · record " + b + "%" : "") + '</small></button>';
   }).join("");
+  const st = catStats(selected);
+  $("progInfo").innerHTML = !selected.size ? "" : "<b>Progres</b> în categoriile alese: " + st.done + " / " + st.total + " cartonașe încercate · <span style=\"color:var(--ok)\">" + st.ok + " corecte</span> · <span style=\"color:var(--bad)\">" + st.bad + " greșite</span>" +
+    (st.done ? " · nivel " + Math.round(st.ok / st.done * 100) + "%" : "") + ' <button class="tool" id="resetProg" type="button">Șterge</button>';
   document.querySelectorAll("#modeSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === mode));
   document.querySelectorAll("#lenSeg button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.len === len));
   const cards = CARDS.filter(c => selected.has(c.cat)).length;
@@ -421,6 +432,10 @@ function renderSetup(){
     : (selected.size === 1 ? "1 categorie" : selected.size + " categorii") + " · " + cards + " cartonașe · întrebări amestecate: traducere în ambele sensuri, propoziții de completat, cuvinte de pus în ordine" +
       (CARDS.some(c => selected.has(c.cat) && c.conj) ? ", conjugări" : "") + (mode === "mc" ? ", traducerea propozițiilor și „care e corectă?”. Variantele greșite diferă doar printr-un detaliu." : ".");
 }
+document.addEventListener("click", e => {
+  if (e.target.id !== "resetProg" || !selected.size) return;
+  if (confirm("Ștergi progresul pentru categoriile alese?")) { CARDS.forEach(c => { if (selected.has(c.cat)) delete prog[c.id]; }); store.set("prog", prog); renderSetup(); }
+});
 $("chips").addEventListener("click", e => {
   const b = e.target.closest(".chip"); if (!b) return;
   const id = b.dataset.id; selected.has(id) ? selected.delete(id) : selected.add(id);
@@ -513,6 +528,7 @@ function finishQ(ok, note, yours){
   const q = test[qi];
   if (ok) score++; else wrong.push({q, yours});
   const c = q.card;
+  prog[c.id] = ok ? 1 : 0; store.set("prog", prog);
   let ex = "";
   if (q.type === "conj") ex = '<div class="ex" lang="fr">' + q.forms.map((f, i) => esc(withPron(f, i))).join(" · ") + '</div>';
   else if (q.type === "sentro") ex = '<div class="ex"><b lang="fr">' + esc(c.fr) + '</b> = ' + esc(c.ro) + '</div>';
@@ -586,6 +602,7 @@ function results(){
   $("rScore").textContent = score + " / " + n;
   $("rPct").textContent = pct + "%";
   $("rMsg").textContent = pct === 100 ? "Perfect! Nicio greșeală." : pct >= 85 ? "Foarte bine!" : pct >= 60 ? "Bine. Mai repetă greșelile de mai jos." : "Mai exersează cu cartonașele, apoi reia testul.";
+  if (lastTest) { const st = catStats(lastTest.cats); $("rMsg").textContent += " Progres în categoriile testului: " + st.done + " / " + st.total + " cartonașe încercate · " + st.ok + " corecte · " + st.bad + " greșite."; }
   if (n >= 10 && lastTest && lastTest.cats.size === 1) {
     const id = [...lastTest.cats][0];
     if (best[id] == null || pct > best[id]) { best[id] = pct; store.set("best", best); }

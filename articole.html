@@ -71,6 +71,13 @@ td.fr{font-family:Literata,Georgia,serif;font-weight:500}
 td.fr b{color:var(--accent)}
 .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .seg button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:10px;padding:10px;font:inherit;font-weight:600;cursor:pointer}
+.prog{font-size:.86rem}
+.prog td,.prog th{font-variant-numeric:tabular-nums;padding:6px 4px;white-space:nowrap}
+.prog th{font-size:.72rem;letter-spacing:.02em}
+.prog td.ok{color:var(--ok);font-weight:600}
+.prog td.bad{color:var(--bad);font-weight:600}
+.prog tr.cur td{background:var(--soft)}
+.prog tr.tot td{font-weight:600}
 .seg button small{font-weight:400;color:var(--muted);font-size:.78rem}
 .seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft);box-shadow:inset 0 0 0 1px var(--accent)}
 .btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:12px 16px;font:inherit;font-weight:600;cursor:pointer;min-height:48px}
@@ -390,6 +397,12 @@ footer{color:var(--muted);font-size:.82rem}
     </div>
     <p class="muted small" id="setupInfo"></p>
     <button class="btn primary" id="startBtn" type="button">Începe</button>
+    <h3 id="progTitle">Progresul tău</h3>
+    <div class="tbl"><table class="prog">
+      <thead><tr><th>Subiect</th><th>Făcute</th><th>Bune</th><th>Greșite</th><th>Nivel</th></tr></thead>
+      <tbody id="progBody"></tbody>
+    </table></div>
+    <p class="muted small" style="margin:0">Se numără fiecare exercițiu o singură dată, după ultimul tău răspuns: dacă greșești și apoi răspunzi corect, trece la „corecte”. Progresul se păstrează în acest browser. <button class="tool" id="resetProg" type="button">Șterge progresul</button></p>
   </section>
 
   <section class="panel view" id="quiz" hidden>
@@ -633,9 +646,27 @@ function renderSetup(){
   document.querySelectorAll("#lenSeg button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.len === len));
   document.querySelectorAll("#typeSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.type === type));
   const best = store.get("best-" + mode + "-" + type, null);
+  renderProg();
   $("setupInfo").textContent = TYPES[type] + ": " + itemsFor(mode, type).length + " exerciții în total, în ordine amestecată" + (best != null ? " · cel mai bun rezultat la un set complet: " + best + "%" : "") + ".";
 }
 $("lenSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; len = +b.dataset.len; store.set("len", len); renderSetup(); };
+// ---------- progress: last answer per exercise, per tab ----------
+function progOf(m){ return store.get("prog-" + m, {}); }
+function statsFor(m, t){
+  const pr = progOf(m), items = itemsFor(m, t);
+  let ok = 0, bad = 0;
+  items.forEach(x => { const v = pr[x[0]]; if (v === 1) ok++; else if (v === 0) bad++; });
+  return {total: items.length, done: ok + bad, ok, bad};
+}
+function statsText(st){ return st.done + " / " + st.total + " făcute · " + st.ok + " corecte · " + st.bad + " greșite"; }
+function renderProg(){
+  $("progTitle").textContent = "Progresul tău la „" + MODES[mode].title + "”";
+  $("progBody").innerHTML = ["ind", "def", "con", "par", "mix", "all"].map(t => {
+    const st = statsFor(mode, t), lvl = st.done ? Math.round(st.ok / st.done * 100) + "%" : "–";
+    return '<tr class="' + (t === type ? "cur" : "") + (t === "all" ? " tot" : "") + '"><td>' + esc(TYPES[t].replace(/ \(.*\)$/, "")) + '</td><td>' + st.done + " / " + st.total + '</td><td class="ok">' + st.ok + '</td><td class="bad">' + st.bad + '</td><td>' + lvl + '</td></tr>';
+  }).join("");
+}
+$("resetProg").onclick = () => { if (confirm("Ștergi progresul de la „" + MODES[mode].title + "”?")) { store.set("prog-" + mode, {}); renderSetup(); } };
 $("typeSeg").onclick = e => { const b = e.target.closest("button"); if (!b) return; type = b.dataset.type; store.set("type", type); renderSetup(); };
 $("startBtn").onclick = () => newTest();
 
@@ -688,6 +719,7 @@ function finishQ(ok, note, yours){
   answered = true;
   const q = test[qi];
   if (ok) score++; else wrong.push({q, yours});
+  const pr = progOf(mode); pr[q.s] = ok ? 1 : 0; store.set("prog-" + mode, pr);
   const other = q.typing && q.acc.length > 1 ? '<span class="small muted">Se acceptă și: ' + q.acc.slice(1).map(esc).join(", ") + '</span>' : "";
   $("qFb").innerHTML = '<div class="fb ' + (ok ? "right" : "wrong") + '" role="status"><strong class="v">' + (ok ? "Corect!" : "Greșit") + '</strong>' +
     (note ? '<span>' + esc(note) + '</span>' : "") +
@@ -753,6 +785,7 @@ function results(){
   $("rScore").textContent = score + " / " + n;
   $("rPct").textContent = pct + "%";
   $("rMsg").textContent = pct === 100 ? "Perfect! Nicio greșeală." : pct >= 85 ? "Foarte bine!" : pct >= 60 ? "Bine. Uită-te la greșelile de mai jos și reia-le." : "Mai citește o dată teoria, apoi reia exercițiile.";
+  $("rMsg").textContent += " Progres la " + TYPES[type].replace(/ \(.*\)$/, "") + ": " + statsText(statsFor(mode, type)) + ".";
   if (fullRun) { const b = store.get("best-" + mode + "-" + type, null); if (b == null || pct > b) store.set("best-" + mode + "-" + type, pct); }
   $("retryWrongBtn").hidden = !wrong.length;
   $("rListBox").hidden = !wrong.length;

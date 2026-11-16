@@ -150,6 +150,7 @@ let shuffled = store.get("shuffled", false);
 let order = [], pos = -1;                      // position in the deck order
 let history = [], hpos = -1;                   // cards actually shown
 let flipped = false;
+let seen = new Set(store.get("seen", []));     // cards whose back was shown at least once
 
 const $ = id => document.getElementById(id);
 
@@ -192,7 +193,12 @@ function next(){
   flipped = false; render();
 }
 function prev(){ if (hpos > 0) { hpos = Math.min(hpos, history.length) - 1; flipped = false; render(); } }
-function flip(){ if (current()) { flipped = !flipped; render(); } }
+function flip(){
+  const cur = current(); if (!cur) return;
+  flipped = !flipped;
+  if (flipped && !seen.has(cur.id)) { seen.add(cur.id); store.set("seen", [...seen]); renderChips(); }
+  render();
+}
 function current(){ return hpos >= 0 && hpos < history.length ? history[hpos] : null; }
 
 function later(ms, label){
@@ -241,7 +247,8 @@ function stats(){
   const n = order.length;
   const ids = Object.keys(sched).filter(id => BYID[id] && selected.has(BYID[id].cat));
   const due = ids.filter(id => sched[id] <= Date.now()).length;
-  let s = n + " cartonașe";
+  const seenSel = [...seen].filter(id => BYID[id] && selected.has(BYID[id].cat)).length;
+  let s = seenSel + " / " + n + " văzute";
   if (ids.length) {
     const waitingIds = ids.filter(id => sched[id] > Date.now());
     s += " · " + ids.length + " programate";
@@ -253,7 +260,10 @@ function stats(){
 }
 
 function renderChips(){
-  $("chips").innerHTML = DATA.map(c => '<button type="button" class="chip" data-id="' + c.id + '" aria-pressed="' + selected.has(c.id) + '">' + esc(c.name) + '<small>' + c.cards.length + '</small></button>').join("");
+  $("chips").innerHTML = DATA.map(c => {
+    const n = c.cards.reduce((k, x, i) => k + seen.has(c.id + "-" + i), 0);
+    return '<button type="button" class="chip" data-id="' + c.id + '" aria-pressed="' + selected.has(c.id) + '">' + esc(c.name) + '<small>' + (n ? n + "/" : "") + c.cards.length + '</small></button>';
+  }).join("");
 }
 function selectionChanged(){ save(); renderChips(); buildOrder(); next(); }
 
