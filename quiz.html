@@ -55,6 +55,10 @@ a.back:hover{border-color:var(--accent)}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .progress{height:6px;background:var(--soft);border-radius:99px;overflow:hidden}
 .progress i{display:block;height:100%;background:var(--accent);transition:width .2s}
+.live{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums;background:var(--soft);border-radius:8px;padding:6px 10px}
+.live b{color:var(--ink)}
+.live .ok{color:var(--ok);font-weight:600}
+.live .bad{color:var(--bad);font-weight:600}
 .qmeta{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-variant-numeric:tabular-nums}
 .qkind{font-size:.9rem;color:var(--muted)}
 .prompt{font:700 clamp(1.4rem,5vw,2rem)/1.25 Literata,Georgia,serif;overflow-wrap:anywhere;text-wrap:balance}
@@ -145,6 +149,7 @@ footer{color:var(--muted);font-size:.82rem}
   <section class="panel" id="quiz" hidden>
     <div class="qmeta"><span id="qCount"></span><span id="qScore"></span></div>
     <div class="progress"><i id="qBar"></i></div>
+    <div class="live" id="qLive" aria-live="polite"></div>
     <div class="qkind" id="qKind"></div>
     <div class="prompt" id="qPrompt"></div>
     <div class="hintline" id="qHint"></div>
@@ -490,6 +495,14 @@ function start(t){
   test = t; lastTest = {cats: new Set(selected), len, mode}; qi = 0; score = 0; wrong = [];
   show("quiz"); renderQ();
 }
+function liveHtml(label, st){
+  return '<span><b>' + esc(label) + ':</b> ' + st.done + ' / ' + st.total + ' făcute</span><span class="ok">✓ ' + st.ok + ' corecte</span><span class="bad">✗ ' + st.bad + ' greșite</span><span>nivel ' + (st.done ? Math.round(st.ok / st.done * 100) + '%' : '–') + '</span>';
+}
+function renderLive(){
+  const cats = new Set(test.map(q => q.card.cat));
+  const label = cats.size === 1 ? DATA.find(d => cats.has(d.id)).name : "Progres în " + cats.size + " categorii";
+  $("qLive").innerHTML = liveHtml(label, catStats(cats));
+}
 function renderQ(){
   const q = test[qi]; answered = false;
   $("qCount").textContent = "Întrebarea " + (qi + 1) + " din " + test.length;
@@ -536,6 +549,7 @@ function renderQ(){
     inp.focus({preventScroll: true});
   }
   $("skipBtn").hidden = false;
+  renderLive();
 }
 function renderTiles(){
   const q = test[qi];
@@ -564,7 +578,7 @@ function finishQ(ok, note, yours){
   const q = test[qi];
   if (ok) score++; else wrong.push({q, yours});
   const c = q.card;
-  prog[c.id] = ok ? 1 : 0; store.set("prog", prog);
+  prog[c.id] = ok ? 1 : 0; store.set("prog", prog); renderLive();
   let ex = "";
   if (q.type === "conj") ex = '<div class="ex" lang="fr">' + q.forms.map((f, i) => esc(withPron(f, i))).join(" · ") + '</div>';
   else if (q.type === "sentro") ex = '<div class="ex"><b lang="fr">' + esc(c.fr) + '</b> = ' + esc(c.ro) + '</div>';
