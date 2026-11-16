@@ -321,6 +321,42 @@ function makeQuestions(card, typing){
   return qs;
 }
 
+// What kind of article an answer is (un → nehotărât, au → contractat…). t = ind/def/con/par or null (guessed from the explanation).
+function artInfo(a, t, why){
+  a = String(a).toLowerCase().replace(/[’‘]/g, "'").trim();
+  if (!t && why) t = /[àa] \+ |de \+ |contract/i.test(why) ? "con" : /partitiv/i.test(why) ? "par" : null;
+  const D = " (article défini)", I = " (article indéfini)", C = " (article contracté)", P = " (article partitif)";
+  const M = {
+    "le": "articol hotărât, masculin singular" + D, "la": "articol hotărât, feminin singular" + D,
+    "l'": "articol hotărât cu elisiune, înainte de vocală sau h mut" + D, "les": "articol hotărât, plural" + D,
+    "un": "articol nehotărât, masculin singular" + I, "une": "articol nehotărât, feminin singular" + I,
+    "au": "articol contractat: à + le" + C, "aux": "articol contractat: à + les" + C,
+    "à la": "prepoziția à + articolul hotărât la (nu se contractă)", "à l'": "prepoziția à + articolul hotărât l' (nu se contractă)",
+    "à": "prepoziția à, fără articol", "chez le": "prepoziția chez + articolul hotărât le"
+  };
+  if (M[a]) return M[a];
+  if (a === "des") return t === "con" ? "articol contractat: de + les" + C : t === "par" ? "articol partitiv, plural" + P : "articol nehotărât, plural" + I;
+  if (a === "du") return t === "con" ? "articol contractat: de + le" + C : "articol partitiv, masculin" + P;
+  if (a === "de la") return t === "con" ? "prepoziția de + articolul hotărât la (nu se contractă)" : "articol partitiv, feminin" + P;
+  if (a === "de l'") return t === "con" ? "prepoziția de + articolul hotărât l' (nu se contractă)" : "articol partitiv, înainte de vocală sau h mut" + P;
+  if (a === "de" || a === "d'") return t === "con" ? "prepoziția de, fără articol" : "de / d' în locul articolului (după negație, după o cantitate sau înaintea unui adjectiv la plural)";
+  return "";
+}
+const ART_CATS = {art: null, artreg: null, artun: "ind", artle: "def", artau: "con", artdu: "par"};
+// The article at the start of an article card ("au marché" → au), or "".
+function leadArticle(fr){
+  const f = fr.toLowerCase().replace(/[’‘]/g, "'");
+  for (const a of ["de la", "de l'", "à la", "à l'", "chez le", "aux", "au", "des", "du", "une", "un", "les", "le", "la", "l'", "de", "d'"])
+    if (f === a || f.startsWith(a.endsWith("'") ? a : a + " ")) return a;
+  return "";
+}
+function cardKind(c){
+  if (!(c.cat in ART_CATS)) return "";
+  const a = leadArticle(c.fr); if (!a) return "";
+  const k = artInfo(a, ART_CATS[c.cat] || (/\+/.test(c.fr) ? "con" : null), c.why || c.ro);
+  return k ? '<b lang="fr">' + esc(a) + '</b> — ' + esc(k) : "";
+}
+
 // Wrong options: prefer the same category, never something that would also be correct.
 function distractors(q, pool){
   const a0 = ALT[q.card.id], alt = a0 && (q.type === "corect" ? (a0.corect !== undefined ? a0.corect : a0.sent) : a0[q.type]);
@@ -538,6 +574,7 @@ function finishQ(ok, note, yours){
   $("qFb").innerHTML = '<div class="fb ' + (ok ? "right" : "wrong") + '" role="status"><strong class="v">' + (ok ? "Corect!" : "Greșit") + '</strong>' +
     (note ? '<span>' + esc(note) + '</span>' : "") +
     (!ok || note ? '<span>Răspuns corect: <b lang="fr">' + esc(correctText(q)) + '</b></span>' : "") + ex +
+    (cardKind(c) ? '<div class="ex">Articolul: ' + cardKind(c) + '</div>' : "") +
     (c.why ? '<div class="ex"><b>De ce:</b> ' + esc(c.why) + '</div>' : "") + '</div>';
   $("qScore").textContent = "Corecte: " + score;
   $("qBar").style.width = ((qi + 1) / test.length * 100) + "%";
